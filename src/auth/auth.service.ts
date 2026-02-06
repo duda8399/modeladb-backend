@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/users/user.service';
 
@@ -25,7 +26,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: any) {
+  async login(user: User) {
     const payload = { sub: user.id, email: user.email };
 
     const accessToken = this.jwtService.sign(payload, {
@@ -33,7 +34,7 @@ export class AuthService {
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: '7d',
+      expiresIn: '1d',
     });
 
     await this.userService.updateRefreshToken(user.id, refreshToken);

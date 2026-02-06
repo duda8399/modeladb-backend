@@ -34,6 +34,6 @@ export class AuthController {
   @UseGuards(JwtResetPasswordGuard)
   @Post('reset-password')
   async resetPassword(@Request() req, @Body('password') password: string) {
-    return await this.authService.resetPassword(req.user, password);
+    return await this.authService.resetPassword(req.user.sub, password);
   }
 }

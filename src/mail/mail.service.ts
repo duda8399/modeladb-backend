@@ -19,7 +19,7 @@ export class MailService {
 
   async sendPasswordResetEmail(email: string, token: string) {
     const resetLink = `${process.env.FRONT_URL}/reset-password?token=${token}`;
-    
+
     try {
       const response = await this.transporter.sendMail({
         from: process.env.MAIL_FROM,
@@ -38,9 +38,7 @@ export class MailService {
           <p>Se você não solicitou, ignore este e-mail.</p>
         `,
       });
-      console.log('response', response);
     } catch (error) {
-      console.error(error);
       throw new InternalServerErrorException(
         'Erro ao enviar e-mail de recuperação',
       );

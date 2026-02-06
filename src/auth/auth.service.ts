@@ -68,10 +68,10 @@ export class AuthService {
     await this.mailService.sendPasswordResetEmail(user.email, token);
   }
 
-  async resetPassword(user: User, password: string) {
+  async resetPassword(userId: string, password: string) {
     const hash = await bcrypt.hash(password, 10);
 
-    await this.userService.updatePassword(user.id, hash);
+    await this.userService.updatePassword(userId, hash);
 
     return {
       message: 'Senha alterada com sucesso',

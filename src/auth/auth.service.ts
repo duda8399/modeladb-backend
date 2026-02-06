@@ -1,7 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { MailService } from 'src/mail/mail.service';
 import { UserService } from 'src/users/user.service';
 
 @Injectable()
@@ -9,6 +10,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private mailService: MailService
   ) {}
 
   async register(name: string, email: string, password: string) {
@@ -44,5 +46,35 @@ export class AuthService {
 
   async refresh(user: any) {
     return this.login(user);
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado.');
+    }
+
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      type: 'password-reset',
+    };
+
+    const token = this.jwtService.sign(payload, {
+      expiresIn: '15m',
+    });
+
+    await this.mailService.sendPasswordResetEmail(user.email, token);
+  }
+
+  async resetPassword(user: User, password: string) {
+    const hash = await bcrypt.hash(password, 10);
+
+    await this.userService.updatePassword(user.id, hash);
+
+    return {
+      message: 'Senha alterada com sucesso',
+    };
   }
 }

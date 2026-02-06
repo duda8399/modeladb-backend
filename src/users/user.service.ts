@@ -23,4 +23,11 @@ export class UserService {
       data: { refreshToken },
     });
   }
+
+  async updatePassword(userId: string, password: string) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { password },
+    });
+  }
 }

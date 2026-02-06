@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtResetPasswordGuard } from './guards/jwt-reset.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -23,5 +24,16 @@ export class AuthController {
   @Post('refresh')
   refresh(@Request() req) {
     return this.authService.refresh(req.user);
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body('email') email: string) {
+    return await this.authService.forgotPassword(email);
+  }
+
+  @UseGuards(JwtResetPasswordGuard)
+  @Post('reset-password')
+  async resetPassword(@Request() req, @Body('password') password: string) {
+    return await this.authService.resetPassword(req.user, password);
   }
 }

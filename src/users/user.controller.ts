@@ -1,6 +1,17 @@
-import { Controller, Get, Param, HttpException, HttpStatus, Put } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  HttpException,
+  HttpStatus,
+  Put,
+  UseInterceptors,
+  Body,
+  UploadedFile,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -19,9 +30,14 @@ export class UserController {
   }
 
   @Put(':id')
-  async updateUser(@Param('id') id: string, dto: UserDto) {
+  @UseInterceptors(FileInterceptor('avatar'))
+  async updateUser(
+    @Param('id') id: string,
+    @Body() dto: UserDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
     try {
-      return await this.userService.update(id, dto);
+      return await this.userService.update(id, dto, file);
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível atualizar os dados do usuário.',

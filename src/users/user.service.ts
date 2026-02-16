@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { UserDto } from './dto/user.dto';
+import * as bcrypt from 'bcrypt';
+import { StorageService } from 'src/storage/storage.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private storageService: StorageService
+  ) {}
 
   async create(name: string, email: string, password: string) {
     return this.prisma.user.create({
@@ -12,10 +17,24 @@ export class UserService {
     });
   }
 
-  async update(id: string, dto: UserDto) {
+  async update(id: string, dto: UserDto, file?: Express.Multer.File) {
+    const data: any = {};
+
+    if (dto.name) data.name = dto.name;
+
+    if (dto.password) {
+      const hash = await bcrypt.hash(dto.password, 10);
+      data.password = hash;
+    }
+
+    if (file) {
+      const url = await this.storageService.upload(file, id);
+      data.avatarUrl = url;
+    }
+
     return this.prisma.user.update({
       where: { id },
-      data: { name: dto.name, password: dto.newPassword, avatarUrl: dto.avatarUrl },
+      data: data,
     });
   }
 

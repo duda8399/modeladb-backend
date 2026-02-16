@@ -41,7 +41,7 @@ export class AuthService {
 
     await this.userService.updateRefreshToken(user.id, refreshToken);
 
-    return { userId: user.id, accessToken, refreshToken };
+    return { userId: user.id, accessToken, avatarUrl: user.avatarUrl };
   }
 
   async refresh(user: any) {

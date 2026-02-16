@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -17,7 +17,26 @@ export class StorageService {
     });
   }
 
-  async upload(file: Express.Multer.File, folder = 'uploads') {
+  async upload(file: Express.Multer.File, folder: string) {
+
+    const list = await this.client.send(
+      new ListObjectsV2Command({
+        Bucket: this.bucket,
+        Prefix: `${folder}/`,
+      }),
+    );
+
+    if (list.Contents && list.Contents.length > 0) {
+      await this.client.send(
+        new DeleteObjectsCommand({
+          Bucket: this.bucket,
+          Delete: {
+            Objects: list.Contents.map((item) => ({ Key: item.Key! })),
+          },
+        }),
+      );
+    }
+
     const fileName = `${folder}/${randomUUID()}-${file.originalname}`;
 
     await this.client.send(

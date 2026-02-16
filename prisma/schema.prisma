@@ -16,4 +16,43 @@ model User {
   avatarUrl    String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  Diagram      Diagram[]
+
+  @@map("users")
+}
+
+model Diagram {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String   
+  userId       String   @db.ObjectId
+  edges        Edge[]
+  nodes        Node[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  User         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("diagrams")
+}
+
+type Edge {
+  id           String
+  source       String
+  sourceHandle String?
+  target       String
+}
+
+type Node {
+  id       String
+  type     NodeType
+  data     Json
+  position Position
+}
+
+type Position {
+  x Float
+  y Float
+}
+
+enum NodeType {
+  entityNode
 }

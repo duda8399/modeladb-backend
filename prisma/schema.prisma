@@ -39,6 +39,7 @@ type Edge {
   source       String
   sourceHandle String?
   target       String
+  data         Json?
 }
 
 type Node {

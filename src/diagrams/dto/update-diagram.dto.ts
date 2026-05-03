@@ -15,6 +15,7 @@ type EdgeDto = {
   source: string;
   sourceHandle?: string | null;
   target: string;
+  data?: Record<string, unknown>;
 };
 
 export class UpdateDiagramDto {

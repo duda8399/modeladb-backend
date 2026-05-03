@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { DiagramDto } from './dto/diagram.dto';
 import { UserService } from 'src/users/user.service';
@@ -78,5 +78,25 @@ export class DiagramService {
       where: { userId },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async deleteByIdForUser(id: string, userId: string) {
+    const diagram = await this.findById(id);
+
+    if (!diagram) {
+      throw new NotFoundException('Diagrama não encontrado.');
+    }
+
+    if (diagram.userId !== userId) {
+      throw new ForbiddenException('Sem permissão para remover este diagrama.');
+    }
+
+    await this.prisma.diagram.delete({
+      where: { id },
+    });
+
+    return {
+      message: 'Diagrama removido com sucesso.',
+    };
   }
 }

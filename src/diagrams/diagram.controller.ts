@@ -10,6 +10,7 @@ import {
   UseGuards,
   Request,
   UnauthorizedException,
+  Delete,
 } from '@nestjs/common';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
@@ -70,6 +71,28 @@ export class DiagramController {
     } catch (error) {
       throw new HttpException(
         error?.message || 'Nao foi possivel atualizar o diagrama',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteDiagram(
+    @Param('id') id: string,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.deleteByIdForUser(id, userId);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível remover o documento',
         HttpStatus.BAD_REQUEST,
       );
     }

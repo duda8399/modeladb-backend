@@ -72,4 +72,11 @@ export class DiagramService {
       where: { id },
     });
   }
+
+  async findByUserId(userId: string) {
+    return this.prisma.diagram.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }

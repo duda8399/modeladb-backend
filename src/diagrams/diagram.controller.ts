@@ -7,14 +7,37 @@ import {
   Body,
   Post,
   Put,
+  UseGuards,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('diagram')
 export class DiagramController {
   constructor(private diagramService: DiagramService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my-documents')
+  async getMyDocuments(@Request() req: { user?: { sub?: string } }) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.findByUserId(userId);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível buscar os documentos',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 
   @Get(':id')
   async findDiagram(@Param('id') id: string) {

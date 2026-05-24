@@ -40,6 +40,25 @@ export class DiagramController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('recent')
+  async getRecentDocuments(@Request() req: { user?: { sub?: string } }) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.findRecentByUserId(userId);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível buscar os documentos recentes',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   @Get(':id')
   async findDiagram(@Param('id') id: string) {
     try {

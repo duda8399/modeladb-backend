@@ -80,6 +80,14 @@ export class DiagramService {
     });
   }
 
+  async findRecentByUserId(userId: string) {
+    return this.prisma.diagram.findMany({
+      where: { userId },
+      orderBy: { updatedAt: 'desc' },
+      take: 8,
+    });
+  }
+
   async deleteByIdForUser(id: string, userId: string) {
     const diagram = await this.findById(id);
 

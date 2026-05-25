@@ -30,6 +30,8 @@ export class UserService {
     if (file) {
       const url = await this.storageService.upload(file, id);
       data.avatarUrl = url;
+    } else if (dto.avatarUrl === '') {
+      data.avatarUrl = null;
     }
 
     return this.prisma.user.update({

@@ -61,6 +61,10 @@ export class DiagramService {
       };
     }
 
+    if (typeof dto.thumbnail === 'string') {
+      data.thumbnail = dto.thumbnail;
+    }
+
     return this.prisma.diagram.update({
       where: { id },
       data,

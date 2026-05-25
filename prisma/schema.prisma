@@ -48,6 +48,7 @@ type Node {
   type     NodeType
   data     Json
   position Position
+  style    Json?
 }
 
 type Position {
@@ -57,4 +58,7 @@ type Position {
 
 enum NodeType {
   entityNode
+  sectionNode
+  textNode
+  noteNode
 }

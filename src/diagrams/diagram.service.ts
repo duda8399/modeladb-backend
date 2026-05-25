@@ -46,6 +46,7 @@ export class DiagramService {
             x: Number(node.position?.x ?? 0),
             y: Number(node.position?.y ?? 0),
           },
+          style: node.style ?? null,
         })),
       };
     }

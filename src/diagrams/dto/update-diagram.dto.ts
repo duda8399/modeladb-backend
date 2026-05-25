@@ -8,6 +8,7 @@ type NodeDto = {
   type: string;
   data: Record<string, unknown>;
   position: PositionDto;
+  style?: Record<string, unknown> | null;
 };
 
 type EdgeDto = {

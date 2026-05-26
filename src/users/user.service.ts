@@ -34,6 +34,10 @@ export class UserService {
       data.avatarUrl = null;
     }
 
+    if (dto.openaiToken !== undefined) {
+      data.openaiToken = dto.openaiToken || null;
+    }
+
     return this.prisma.user.update({
       where: { id },
       data: data,

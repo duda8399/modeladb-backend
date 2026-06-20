@@ -58,6 +58,7 @@ export class DiagramService {
           source: edge.source,
           sourceHandle: edge.sourceHandle ?? null,
           target: edge.target,
+          data: edge.data ?? null,
         })),
       };
     }

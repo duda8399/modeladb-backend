@@ -16,6 +16,8 @@ type EdgeDto = {
   source: string;
   sourceHandle?: string | null;
   target: string;
+  label?: string | null;
+  type?: string | null;
   data?: Record<string, unknown>;
 };
 

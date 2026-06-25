@@ -41,6 +41,8 @@ type Edge {
   source       String
   sourceHandle String?
   target       String
+  label        String?
+  type         String?
   data         Json?
 }
 

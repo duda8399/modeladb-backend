@@ -29,7 +29,11 @@ export class OpenAIController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.openAIService.generateDiagram(userId, dto.description);
+      return await this.openAIService.generateDiagram(userId, dto.description, {
+        diagramName: dto.diagramName,
+        nodes: dto.nodes,
+        edges: dto.edges,
+      });
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível gerar o diagrama',

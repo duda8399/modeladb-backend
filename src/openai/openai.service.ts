@@ -10,7 +10,15 @@ import { UserService } from 'src/users/user.service';
 export class OpenAIService {
   constructor(private userService: UserService) {}
 
-  async generateDiagram(userId: string, description: string) {
+  async generateDiagram(
+    userId: string,
+    description: string,
+    currentDiagram?: {
+      diagramName?: string;
+      nodes?: Record<string, unknown>[];
+      edges?: Record<string, unknown>[];
+    },
+  ) {
     if (!description?.trim()) {
       throw new BadRequestException('A descrição não pode estar vazia');
     }
@@ -38,7 +46,10 @@ export class OpenAIService {
         response_format: { type: 'json_object' },
         messages: [
           { role: 'system', content: this.buildSystemPrompt() },
-          { role: 'user', content: this.buildUserPrompt(description) },
+          {
+            role: 'user',
+            content: this.buildUserPrompt(description, currentDiagram),
+          },
         ],
       });
     } catch (error) {
@@ -89,17 +100,53 @@ export class OpenAIService {
     ].join('\n');
   }
 
-  private buildUserPrompt(description: string): string {
-    return [
+  private buildUserPrompt(
+    description: string,
+    currentDiagram?: {
+      diagramName?: string;
+      nodes?: Record<string, unknown>[];
+      edges?: Record<string, unknown>[];
+    },
+  ): string {
+    const hasCurrentDiagram = !!currentDiagram?.nodes?.length;
+
+    const parts = [
       'Descrição da estrutura do banco de dados desejada:',
       '"""',
       description.trim(),
       '"""',
       '',
+    ];
+
+    if (hasCurrentDiagram) {
+      parts.push(
+        'Já existe um diagrama construído no editor, no formato JSON abaixo.',
+        'Use-o como ponto de partida: preserve entidades, campos e relacionamentos existentes que não sejam',
+        'contraditos pela descrição, e aplique as mudanças pedidas (adicionar, remover ou alterar entidades,',
+        'campos ou relacionamentos). Retorne o diagrama COMPLETO resultante (todas as entidades e edges,',
+        'inclusive as que não mudaram), não apenas as alterações.',
+        '',
+        'Diagrama atual:',
+        JSON.stringify(
+          {
+            diagramName: currentDiagram?.diagramName,
+            nodes: currentDiagram?.nodes,
+            edges: currentDiagram?.edges,
+          },
+          null,
+          2,
+        ),
+        '',
+      );
+    }
+
+    parts.push(
       'Retorne o diagrama EXATAMENTE no seguinte formato JSON (este é apenas um exemplo de estrutura):',
       '',
       JSON.stringify(this.exampleModel(), null, 2),
-    ].join('\n');
+    );
+
+    return parts.join('\n');
   }
 
   private exampleModel() {

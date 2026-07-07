@@ -25,5 +25,4 @@ export class UpdateDiagramDto {
   name?: string;
   nodes?: NodeDto[];
   edges?: EdgeDto[];
-  thumbnail?: string;
 }

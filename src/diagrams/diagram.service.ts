@@ -65,13 +65,25 @@ export class DiagramService {
       };
     }
 
-    if (typeof dto.thumbnail === 'string') {
-      data.thumbnail = dto.thumbnail;
-    }
-
     return this.prisma.diagram.update({
       where: { id },
       data,
+    });
+  }
+
+  async updateThumbnail(id: string, file: Express.Multer.File) {
+    const diagram = await this.findById(id);
+
+    if (!diagram) {
+      throw new NotFoundException('Diagrama nao encontrado.');
+    }
+
+    const baseUrl = process.env.APP_URL || 'http://localhost:3001';
+    const thumbnail = `${baseUrl}/storage/diagrams/${file.filename}`;
+
+    return this.prisma.diagram.update({
+      where: { id },
+      data: { thumbnail },
     });
   }
 

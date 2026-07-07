@@ -8,10 +8,15 @@ import {
   Post,
   Put,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
   Request,
   UnauthorizedException,
   Delete,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname, join } from 'path';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
@@ -90,6 +95,32 @@ export class DiagramController {
     } catch (error) {
       throw new HttpException(
         error?.message || 'Nao foi possivel atualizar o diagrama',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Put(':id/thumbnail')
+  @UseInterceptors(
+    FileInterceptor('thumbnail', {
+      storage: diskStorage({
+        destination: join(process.cwd(), 'storage', 'diagrams'),
+        filename: (req, file, cb) => {
+          cb(null, `${req.params.id}${extname(file.originalname) || '.jpg'}`);
+        },
+      }),
+      limits: { fileSize: 10 * 1024 * 1024 },
+    }),
+  )
+  async updateThumbnail(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    try {
+      return await this.diagramService.updateThumbnail(id, file);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível salvar o print do diagrama',
         HttpStatus.BAD_REQUEST,
       );
     }

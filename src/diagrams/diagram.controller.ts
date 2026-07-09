@@ -12,6 +12,7 @@ import {
   UploadedFile,
   Request,
   UnauthorizedException,
+  ForbiddenException,
   Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -76,30 +77,56 @@ export class DiagramController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/create')
-  async create(@Body() dto: DiagramDto) {
+  async create(
+    @Body() dto: DiagramDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
     try {
-      return await this.diagramService.create(dto);
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.create(dto, userId);
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível criar o diagrama',
-        HttpStatus.NOT_FOUND,
+        error instanceof UnauthorizedException
+          ? HttpStatus.UNAUTHORIZED
+          : HttpStatus.NOT_FOUND,
       );
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateDiagramDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateDiagramDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
     try {
-      return await this.diagramService.update(id, dto);
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.update(id, dto, userId);
     } catch (error) {
       throw new HttpException(
         error?.message || 'Nao foi possivel atualizar o diagrama',
-        HttpStatus.BAD_REQUEST,
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
       );
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id/thumbnail')
   @UseInterceptors(
     FileInterceptor('thumbnail', {
@@ -115,13 +142,22 @@ export class DiagramController {
   async updateThumbnail(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
+    @Request() req: { user?: { sub?: string } },
   ) {
     try {
-      return await this.diagramService.updateThumbnail(id, file);
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.updateThumbnail(id, file, userId);
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível salvar o print do diagrama',
-        HttpStatus.BAD_REQUEST,
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
       );
     }
   }

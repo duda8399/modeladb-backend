@@ -11,8 +11,8 @@ export class DiagramService {
     private userService: UserService
   ) {}
 
-  async create(dto: DiagramDto) {
-    const user = await this.userService.findById(dto.userId);
+  async create(dto: DiagramDto, userId: string) {
+    const user = await this.userService.findById(userId);
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado.');
@@ -23,11 +23,15 @@ export class DiagramService {
     });
   }
 
-  async update(id: string, dto: UpdateDiagramDto) {
+  async update(id: string, dto: UpdateDiagramDto, userId: string) {
     const diagram = await this.findById(id);
 
     if (!diagram) {
       throw new NotFoundException('Diagrama nao encontrado.');
+    }
+
+    if (diagram.userId !== userId) {
+      throw new ForbiddenException('Sem permissão para editar este diagrama.');
     }
 
     const data: Record<string, unknown> = {};
@@ -71,11 +75,15 @@ export class DiagramService {
     });
   }
 
-  async updateThumbnail(id: string, file: Express.Multer.File) {
+  async updateThumbnail(id: string, file: Express.Multer.File, userId: string) {
     const diagram = await this.findById(id);
 
     if (!diagram) {
       throw new NotFoundException('Diagrama nao encontrado.');
+    }
+
+    if (diagram.userId !== userId) {
+      throw new ForbiddenException('Sem permissão para editar este diagrama.');
     }
 
     const baseUrl = process.env.APP_URL || 'http://localhost:3001';

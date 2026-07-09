@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from './users/user.module';
 import { DiagramModule } from './diagrams/diagram.module';
 import { OpenAIModule } from './openai/openai.module';
+import { RealtimeModule } from './realtime/realtime.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { OpenAIModule } from './openai/openai.module';
     UserModule,
     OpenAIModule,
     DiagramModule,
+    RealtimeModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET || 'teste',

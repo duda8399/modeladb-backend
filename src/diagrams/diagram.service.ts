@@ -101,6 +101,23 @@ export class DiagramService {
     });
   }
 
+  async getAccessRole(
+    diagramId: string,
+    userId: string,
+  ): Promise<'OWNER' | 'EDITOR' | 'VIEWER' | null> {
+    const diagram = await this.findById(diagramId);
+
+    if (!diagram) return null;
+
+    if (diagram.userId === userId) return 'OWNER';
+
+    const collaborator = await this.prisma.diagramCollaborator.findUnique({
+      where: { diagramId_userId: { diagramId, userId } },
+    });
+
+    return collaborator?.role ?? null;
+  }
+
   async findByUserId(userId: string) {
     return this.prisma.diagram.findMany({
       where: { userId },

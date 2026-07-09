@@ -8,32 +8,54 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String   
-  email        String   @unique
-  password     String
-  refreshToken String?
-  avatarUrl    String?
-  openaiToken  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  Diagram      Diagram[]
+  id             String                @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  email          String                @unique
+  password       String
+  refreshToken   String?
+  avatarUrl      String?
+  openaiToken    String?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  Diagram        Diagram[]
+  collaborations DiagramCollaborator[]
 
   @@map("users")
 }
 
 model Diagram {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  userId       String   @db.ObjectId
-  edges        Edge[]
-  nodes        Node[]
-  thumbnail    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  userId    String   @db.ObjectId
+  edges     Edge[]
+  nodes     Node[]
+  thumbnail String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  User         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  User          User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collaborators DiagramCollaborator[]
+
   @@map("diagrams")
+}
+
+enum DiagramRole {
+  EDITOR
+  VIEWER
+}
+
+model DiagramCollaborator {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  diagramId String      @db.ObjectId
+  userId    String      @db.ObjectId
+  role      DiagramRole @default(EDITOR)
+  createdAt DateTime    @default(now())
+
+  diagram Diagram @relation(fields: [diagramId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([diagramId, userId])
+  @@map("diagram_collaborators")
 }
 
 type Edge {

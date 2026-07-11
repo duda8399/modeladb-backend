@@ -7,6 +7,7 @@ import {
   Body,
   Post,
   Put,
+  Patch,
   UseGuards,
   UseInterceptors,
   UploadedFile,
@@ -21,6 +22,8 @@ import { extname, join } from 'path';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
+import { AddCollaboratorDto } from './dto/add-collaborator.dto';
+import { UpdateCollaboratorRoleDto } from './dto/update-collaborator-role.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('diagram')
@@ -65,14 +68,45 @@ export class DiagramController {
     }
   }
 
-  @Get(':id')
-  async findDiagram(@Param('id') id: string) {
+  @UseGuards(JwtAuthGuard)
+  @Get('shared-with-me')
+  async getSharedWithMe(@Request() req: { user?: { sub?: string } }) {
     try {
-      return await this.diagramService.findById(id);
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.findSharedWithUser(userId);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível buscar os diagramas compartilhados',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findDiagram(
+    @Param('id') id: string,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.findByIdForUser(id, userId);
     } catch (error) {
       throw new HttpException(
         error?.message || 'Diagrama não encontrado',
-        HttpStatus.NOT_FOUND,
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.NOT_FOUND,
       );
     }
   }
@@ -155,6 +189,115 @@ export class DiagramController {
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível salvar o print do diagrama',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/collaborators')
+  async addCollaborator(
+    @Param('id') id: string,
+    @Body() dto: AddCollaboratorDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.addCollaborator(id, userId, dto);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível adicionar o colaborador',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/collaborators')
+  async listCollaborators(
+    @Param('id') id: string,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.listCollaborators(id, userId);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível buscar os colaboradores',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id/collaborators/:userId')
+  async updateCollaboratorRole(
+    @Param('id') id: string,
+    @Param('userId') collaboratorUserId: string,
+    @Body() dto: UpdateCollaboratorRoleDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.updateCollaboratorRole(
+        id,
+        userId,
+        collaboratorUserId,
+        dto,
+      );
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível atualizar a permissão',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/collaborators/:userId')
+  async removeCollaborator(
+    @Param('id') id: string,
+    @Param('userId') collaboratorUserId: string,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.removeCollaborator(
+        id,
+        userId,
+        collaboratorUserId,
+      );
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível remover o colaborador',
         error instanceof ForbiddenException
           ? HttpStatus.FORBIDDEN
           : HttpStatus.BAD_REQUEST,

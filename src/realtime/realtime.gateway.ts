@@ -15,6 +15,7 @@ type DiagramRole = 'OWNER' | 'EDITOR' | 'VIEWER';
 
 type SocketData = {
   userId?: string;
+  email?: string;
   diagramId?: string;
   role?: DiagramRole;
 };
@@ -49,6 +50,7 @@ export class RealtimeGateway
       const payload = await this.jwtService.verifyAsync(token);
 
       client.data.userId = payload.sub;
+      client.data.email = payload.email;
     } catch {
       client.emit('error', { message: 'Não autorizado' });
       client.disconnect();
@@ -71,7 +73,7 @@ export class RealtimeGateway
     @ConnectedSocket() client: CollabSocket,
     @MessageBody() data: { diagramId?: string },
   ) {
-    const { userId } = client.data;
+    const { userId, email } = client.data;
     const diagramId = data?.diagramId;
 
     if (!userId || !diagramId) return;
@@ -91,11 +93,12 @@ export class RealtimeGateway
     client.to(this.room(diagramId)).emit('presence', {
       type: 'USER_JOINED',
       userId,
+      email,
     });
 
     client.emit('presence', {
       type: 'ONLINE_USERS',
-      userIds: this.usersInRoom(diagramId).filter((id) => id !== userId),
+      users: this.usersInRoom(diagramId).filter((u) => u.userId !== userId),
     });
   }
 
@@ -138,7 +141,9 @@ export class RealtimeGateway
     return header?.startsWith('Bearer ') ? header.slice(7) : undefined;
   }
 
-  private usersInRoom(diagramId: string): string[] {
+  private usersInRoom(
+    diagramId: string,
+  ): { userId: string; email?: string }[] {
     const room = this.server.sockets.adapter.rooms.get(this.room(diagramId));
 
     if (!room) return [];
@@ -146,10 +151,10 @@ export class RealtimeGateway
     return [...room]
       .map(
         (socketId) =>
-          (this.server.sockets.sockets.get(socketId) as CollabSocket)?.data
-            ?.userId,
+          (this.server.sockets.sockets.get(socketId) as CollabSocket)?.data,
       )
-      .filter((id): id is string => Boolean(id));
+      .filter((data): data is SocketData => Boolean(data?.userId))
+      .map((data) => ({ userId: data.userId as string, email: data.email }));
   }
 
   private room(diagramId: string) {

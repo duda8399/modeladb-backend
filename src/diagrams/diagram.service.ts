@@ -267,9 +267,21 @@ export class DiagramService {
   }
 
   async findSharedWithUser(userId: string) {
-    return this.prisma.diagram.findMany({
-      where: { collaborators: { some: { userId } } },
-      orderBy: { updatedAt: 'desc' },
+    const collaborations = await this.prisma.diagramCollaborator.findMany({
+      where: { userId },
+      include: {
+        diagram: {
+          include: {
+            User: { select: { id: true, name: true, email: true } },
+          },
+        },
+      },
+      orderBy: { diagram: { updatedAt: 'desc' } },
+    });
+
+    return collaborations.map(({ diagram, role }) => {
+      const { User: owner, ...rest } = diagram;
+      return { ...rest, role, owner };
     });
   }
 

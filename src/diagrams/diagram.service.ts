@@ -123,7 +123,7 @@ export class DiagramService {
       throw new ForbiddenException('Sem acesso a este diagrama.');
     }
 
-    return diagram;
+    return { ...diagram, currentUserRole: role };
   }
 
   async getAccessRole(

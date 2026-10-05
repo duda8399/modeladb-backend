@@ -17,8 +17,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
+import { memoryStorage } from 'multer';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
@@ -164,12 +163,7 @@ export class DiagramController {
   @Put(':id/thumbnail')
   @UseInterceptors(
     FileInterceptor('thumbnail', {
-      storage: diskStorage({
-        destination: join(process.cwd(), 'storage', 'diagrams'),
-        filename: (req, file, cb) => {
-          cb(null, `${req.params.id}${extname(file.originalname) || '.jpg'}`);
-        },
-      }),
+      storage: memoryStorage(),
       limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )

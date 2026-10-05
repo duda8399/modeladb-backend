@@ -395,5 +395,37 @@ describe('Diagramas e compartilhamento (integração)', () => {
         .set(auth(owner))
         .expect(404);
     });
+    describe('miniatura', () => {
+    it('salva a miniatura enviada pelo editor e nega quem é só VIEWER', async () => {
+      const viewer = await registerAndLogin(ctx, 'thumbviewer');
+      const diagramId = await createDiagram(ctx, owner);
+      await share(ctx, owner, diagramId, viewer, 'VIEWER');
+      const jpg = Buffer.from([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10]);
+
+      const res = await ctx
+        .http()
+        .put(`/diagram/${diagramId}/thumbnail`)
+        .set(auth(owner))
+        .attach('thumbnail', jpg, 'print.jpg')
+        .expect(200);
+      expect(typeof res.body.thumbnail).toBe('string');
+      expect(res.body.thumbnail.length).toBeGreaterThan(0);
+
+      const saved = await ctx
+        .http()
+        .get(`/diagram/${diagramId}`)
+        .set(auth(owner))
+        .expect(200);
+      expect(saved.body.thumbnail).toBe(res.body.thumbnail);
+
+      await ctx
+        .http()
+        .put(`/diagram/${diagramId}/thumbnail`)
+        .set(auth(viewer))
+        .attach('thumbnail', jpg, 'print.jpg')
+        .expect(403);
+    });
   });
+
+});
 });

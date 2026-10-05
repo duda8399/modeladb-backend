@@ -24,7 +24,9 @@ type CollabSocket = Socket & { data: SocketData };
 
 @WebSocketGateway({
   cors: {
-    origin: process.env.FRONT_URL || 'http://localhost:5173',
+    origin: (process.env.FRONT_URL || 'http://localhost:5173')
+      .split(',')
+      .map((o) => o.trim().replace(/\/$/, '')),
     credentials: true,
   },
 })

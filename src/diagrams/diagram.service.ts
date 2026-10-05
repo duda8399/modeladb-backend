@@ -1,3 +1,5 @@
+import { mkdirSync, writeFileSync } from 'fs';
+import { extname, join } from 'path';
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Diagram, DiagramRole } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
@@ -6,6 +8,7 @@ import { UserService } from 'src/users/user.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
 import { AddCollaboratorDto } from './dto/add-collaborator.dto';
 import { UpdateCollaboratorRoleDto } from './dto/update-collaborator-role.dto';
+import { StorageService } from 'src/storage/storage.service';
 
 type AccessRole = 'OWNER' | DiagramRole;
 
@@ -13,7 +16,8 @@ type AccessRole = 'OWNER' | DiagramRole;
 export class DiagramService {
   constructor(
     private prisma: PrismaService,
-    private userService: UserService
+    private userService: UserService,
+    private storageService?: StorageService,
   ) {}
 
   async create(dto: DiagramDto, userId: string) {
@@ -95,8 +99,26 @@ export class DiagramService {
       throw new ForbiddenException('Sem permissão para editar este diagrama.');
     }
 
-    const baseUrl = process.env.APP_URL || 'http://localhost:3001';
-    const thumbnail = `${baseUrl}/storage/diagrams/${file.filename}`;
+    if (!file) {
+      throw new Error('Arquivo de miniatura não enviado.');
+    }
+
+    // Em produção (S3 configurado) a miniatura vai para o bucket, porque o
+    // disco de hospedagens gratuitas é apagado a cada deploy/reinício.
+    // Sem S3 (desenvolvimento/testes) cai no disco local servido em /storage.
+    let thumbnail: string;
+    if (this.storageService && process.env.AWS_BUCKET_NAME) {
+      thumbnail = await this.storageService.upload(
+        { ...file, originalname: `thumbnail${extname(file.originalname) || '.jpg'}` },
+        `diagrams/${id}`,
+      );
+    } else {
+      mkdirSync(join(process.cwd(), 'storage', 'diagrams'), { recursive: true });
+      const filename = `${id}${extname(file.originalname) || '.jpg'}`;
+      writeFileSync(join(process.cwd(), 'storage', 'diagrams', filename), file.buffer);
+      const baseUrl = process.env.APP_URL || 'http://localhost:3001';
+      thumbnail = `${baseUrl}/storage/diagrams/${filename}?v=${Date.now()}`;
+    }
 
     return this.prisma.diagram.update({
       where: { id },

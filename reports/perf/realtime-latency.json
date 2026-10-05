@@ -1,0 +1,201 @@
+{
+  "environment": {
+    "date": "2026-10-03T20:32:15.990Z",
+    "node": "v20.19.6",
+    "cpu": "13th Gen Intel(R) Core(TM) i5-1345U",
+    "cores": 12,
+    "memoryGb": 31.04,
+    "opsPerScenario": 200,
+    "loadSeconds": 5,
+    "loadRatePerClient": 10,
+    "serverBaselineRssMb": 198.7
+  },
+  "results": [
+    {
+      "clients": 2,
+      "join": {
+        "count": 2,
+        "mean": 22.58,
+        "p50": 19.7,
+        "p95": 25.46,
+        "p99": 25.46,
+        "max": 25.46
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.44,
+        "p50": 0.38,
+        "p95": 0.8,
+        "p99": 1.74,
+        "max": 3.76
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.27,
+        "p50": 1.13,
+        "p95": 2.48,
+        "p99": 3.73,
+        "max": 3.73,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 155.7
+    },
+    {
+      "clients": 5,
+      "join": {
+        "count": 5,
+        "mean": 30.41,
+        "p50": 29.94,
+        "p95": 32.41,
+        "p99": 32.41,
+        "max": 32.41
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.62,
+        "p50": 0.54,
+        "p95": 1.29,
+        "p99": 1.55,
+        "max": 2.27
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.81,
+        "p50": 1.82,
+        "p95": 2.66,
+        "p99": 3.73,
+        "max": 7.19,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 195.99,
+        "lossRate": 0
+      },
+      "serverRssMb": 159.28
+    },
+    {
+      "clients": 10,
+      "join": {
+        "count": 10,
+        "mean": 15.02,
+        "p50": 14.4,
+        "p95": 18.11,
+        "p99": 18.11,
+        "max": 18.11
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.48,
+        "p50": 0.4,
+        "p95": 1.08,
+        "p99": 1.53,
+        "max": 2.24
+      },
+      "loaded": {
+        "count": 4401,
+        "mean": 1.58,
+        "p50": 1.63,
+        "p95": 2.33,
+        "p99": 2.58,
+        "max": 2.98,
+        "opsPerSecondSent": 97.78,
+        "deliveriesPerSecond": 880,
+        "lossRate": 0
+      },
+      "serverRssMb": 164.28
+    },
+    {
+      "clients": 25,
+      "join": {
+        "count": 25,
+        "mean": 63.39,
+        "p50": 61.61,
+        "p95": 73.25,
+        "p99": 75.32,
+        "max": 75.32
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.4,
+        "p50": 0.38,
+        "p95": 0.76,
+        "p99": 1.08,
+        "max": 2
+      },
+      "loaded": {
+        "count": 29352,
+        "mean": 1.86,
+        "p50": 1.7,
+        "p95": 3.41,
+        "p99": 4.58,
+        "max": 11.64,
+        "opsPerSecondSent": 244.59,
+        "deliveriesPerSecond": 5870.26,
+        "lossRate": 0
+      },
+      "serverRssMb": 167.47
+    },
+    {
+      "clients": 50,
+      "join": {
+        "count": 50,
+        "mean": 121.42,
+        "p50": 121.75,
+        "p95": 124.85,
+        "p99": 131.1,
+        "max": 131.1
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.58,
+        "p50": 0.46,
+        "p95": 1.35,
+        "p99": 2.52,
+        "max": 4.14
+      },
+      "loaded": {
+        "count": 119854,
+        "mean": 1.82,
+        "p50": 1.47,
+        "p95": 4.33,
+        "p99": 6.62,
+        "max": 13.02,
+        "opsPerSecondSent": 489.13,
+        "deliveriesPerSecond": 23967.32,
+        "lossRate": 0
+      },
+      "serverRssMb": 177.9
+    },
+    {
+      "clients": 100,
+      "join": {
+        "count": 100,
+        "mean": 103.45,
+        "p50": 81.45,
+        "p95": 193.87,
+        "p99": 199.41,
+        "max": 201.02
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.78,
+        "p50": 0.56,
+        "p95": 1.93,
+        "p99": 3.4,
+        "max": 8.47
+      },
+      "loaded": {
+        "count": 480744,
+        "mean": 7.15,
+        "p50": 5.06,
+        "p95": 19.22,
+        "p99": 41.31,
+        "max": 74.74,
+        "opsPerSecondSent": 970.77,
+        "deliveriesPerSecond": 96106.33,
+        "lossRate": 0
+      },
+      "serverRssMb": 198.07
+    }
+  ]
+}

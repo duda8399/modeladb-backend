@@ -1,5 +1,6 @@
 # Blueprint do Render (https://render.com/docs/blueprint-spec)
-# Cria o backend NestJS como Web Service gratuito.
+# Cria o backend NestJS (Web Service gratuito) e o frontend Vite (Static Site
+# gratuito, vindo do repositório modeladb-frontend).
 # Valores marcados com sync: false são pedidos no painel ao aplicar o blueprint.
 services:
   - type: web
@@ -39,4 +40,23 @@ services:
       - key: AWS_SECRET_ACCESS_KEY
         sync: false
       - key: AWS_BUCKET_NAME
+        sync: false
+
+  - type: web
+    name: modeladb-frontend
+    runtime: static
+    repo: https://github.com/duda8399/modeladb-frontend
+    branch: master
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    routes:
+      # SPA: qualquer rota do React Router cai no index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.6
+      # URL pública do backend, ex.: https://modeladb-backend.onrender.com
+      - key: VITE_BACKEND_URL
         sync: false

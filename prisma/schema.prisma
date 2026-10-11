@@ -35,6 +35,7 @@ model Diagram {
 
   User          User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   collaborators DiagramCollaborator[]
+  versions      DiagramVersion[]
 
   @@map("diagrams")
 }
@@ -56,6 +57,34 @@ model DiagramCollaborator {
 
   @@unique([diagramId, userId])
   @@map("diagram_collaborators")
+}
+
+enum VersionKind {
+  AUTO
+  MANUAL
+  RESTORE
+}
+
+model DiagramVersion {
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  diagramId      String      @db.ObjectId
+  name           String
+  label          String?
+  kind           VersionKind @default(AUTO)
+  nodes          Node[]
+  edges          Edge[]
+  tableCount     Int         @default(0)
+  viewCount      Int         @default(0)
+  relationCount  Int         @default(0)
+  createdById    String?     @db.ObjectId
+  createdByName  String?
+  restoredFromId String?     @db.ObjectId
+  createdAt      DateTime    @default(now())
+
+  diagram Diagram @relation(fields: [diagramId], references: [id], onDelete: Cascade)
+
+  @@index([diagramId, createdAt])
+  @@map("diagram_versions")
 }
 
 type Edge {

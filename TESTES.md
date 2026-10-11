@@ -26,6 +26,7 @@
 | `test/diagram-permissions.e2e-spec.ts` | Matriz papel × ação (dono, editor, leitor, sem acesso) × 7 ações = 28 casos |
 | `test/diagrams.e2e-spec.ts` | Persistência dos nós/arestas, listagens, convites, troca de papel, remoção, exclusão em cascata |
 | `test/realtime.e2e-spec.ts` | Handshake com JWT, entrada na sala, presença, difusão de operações, ordem FIFO, isolamento entre salas, bloqueio do leitor |
+| `test/versions.e2e-spec.ts` | Histórico de versões: versão automática com intervalo e limite de 50, versões manuais, permissões por papel, restauração com backup e aviso em tempo real, exclusão em cascata |
 | `src/diagrams/diagram.service.spec.ts` | Regras de papel e normalização de dados, isoladas do banco |
 | `test/perf/realtime-latency.ts` | Gera `reports/perf/realtime-latency.{md,csv,json}` e histogramas |
 

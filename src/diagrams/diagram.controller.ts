@@ -20,6 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
+import { DiagramVersionService } from './diagram-version.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
 import { AddCollaboratorDto } from './dto/add-collaborator.dto';
 import { UpdateCollaboratorRoleDto } from './dto/update-collaborator-role.dto';
@@ -27,7 +28,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('diagram')
 export class DiagramController {
-  constructor(private diagramService: DiagramService) {}
+  constructor(
+    private diagramService: DiagramService,
+    private versionService: DiagramVersionService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('my-documents')
@@ -148,7 +152,11 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.diagramService.update(id, dto, userId);
+      const updated = await this.diagramService.update(id, dto, userId);
+      await this.versionService
+        .recordAutoVersion(updated, userId)
+        .catch(() => null);
+      return updated;
     } catch (error) {
       throw new HttpException(
         error?.message || 'Nao foi possivel atualizar o diagrama',

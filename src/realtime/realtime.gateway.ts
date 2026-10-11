@@ -3,6 +3,7 @@ import {
   ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
+  OnGatewayInit,
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { DiagramService } from 'src/diagrams/diagram.service';
+import { DiagramEvents } from 'src/diagrams/diagram-events';
 
 type DiagramRole = 'OWNER' | 'EDITOR' | 'VIEWER';
 
@@ -31,7 +33,7 @@ type CollabSocket = Socket & { data: SocketData };
   },
 })
 export class RealtimeGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
+  implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   @WebSocketServer()
   server: Server;
@@ -39,7 +41,14 @@ export class RealtimeGateway
   constructor(
     private jwtService: JwtService,
     private diagramService: DiagramService,
+    private events: DiagramEvents,
   ) {}
+
+  afterInit(server: Server) {
+    this.events.restored.subscribe((event) => {
+      server.to(this.room(event.diagramId)).emit('document_restored', event);
+    });
+  }
 
   async handleConnection(client: CollabSocket) {
     try {

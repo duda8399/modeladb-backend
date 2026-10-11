@@ -1,3 +1,5 @@
+import { IsArray, IsOptional, IsString, MaxLength } from 'class-validator';
+
 type PositionDto = {
   x: number;
   y: number;
@@ -22,7 +24,16 @@ type EdgeDto = {
 };
 
 export class UpdateDiagramDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
   name?: string;
+
+  @IsOptional()
+  @IsArray()
   nodes?: NodeDto[];
+
+  @IsOptional()
+  @IsArray()
   edges?: EdgeDto[];
 }

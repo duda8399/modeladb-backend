@@ -167,4 +167,24 @@ describe('Análise do modelo pela IA (integração, OpenAI simulada)', () => {
     });
     await analyze(user, diagram).expect(500);
   });
+
+  it('usa a chave decifrada e migra chaves legadas em texto puro para o formato cifrado', async () => {
+    const legado = await registerAndLogin(ctx, 'legado');
+    const prisma = ctx.app.get(PrismaService);
+    await prisma.user.update({
+      where: { id: legado.id },
+      data: { openaiToken: 'sk-legado-em-claro' },
+    });
+    const createClient = jest.spyOn(ctx.app.get(OpenAIService), 'createClient');
+    createClient.mockClear();
+    create.mockResolvedValueOnce({
+      choices: [{ message: { content: '{quebrado' } }],
+    });
+
+    await analyze(legado, diagram).expect(500);
+
+    expect(createClient).toHaveBeenCalledWith('sk-legado-em-claro');
+    const stored = await prisma.user.findUnique({ where: { id: legado.id } });
+    expect(stored?.openaiToken).toMatch(/^enc:v1:/);
+  });
 });

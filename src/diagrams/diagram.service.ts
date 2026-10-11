@@ -9,6 +9,7 @@ import { UpdateDiagramDto } from './dto/update-diagram.dto';
 import { AddCollaboratorDto } from './dto/add-collaborator.dto';
 import { UpdateCollaboratorRoleDto } from './dto/update-collaborator-role.dto';
 import { StorageService } from 'src/storage/storage.service';
+import { sanitizeImage } from 'src/common/image-upload';
 
 type AccessRole = 'OWNER' | DiagramRole;
 
@@ -103,19 +104,18 @@ export class DiagramService {
       throw new Error('Arquivo de miniatura não enviado.');
     }
 
+    const image = sanitizeImage(file, 'thumbnail');
+
     // Em produção (S3 configurado) a miniatura vai para o bucket, porque o
     // disco de hospedagens gratuitas é apagado a cada deploy/reinício.
     // Sem S3 (desenvolvimento/testes) cai no disco local servido em /storage.
     let thumbnail: string;
     if (this.storageService && process.env.AWS_BUCKET_NAME) {
-      thumbnail = await this.storageService.upload(
-        { ...file, originalname: `thumbnail${extname(file.originalname) || '.jpg'}` },
-        `diagrams/${id}`,
-      );
+      thumbnail = await this.storageService.upload(image, `diagrams/${id}`);
     } else {
       mkdirSync(join(process.cwd(), 'storage', 'diagrams'), { recursive: true });
-      const filename = `${id}${extname(file.originalname) || '.jpg'}`;
-      writeFileSync(join(process.cwd(), 'storage', 'diagrams', filename), file.buffer);
+      const filename = `${id}${extname(image.originalname)}`;
+      writeFileSync(join(process.cwd(), 'storage', 'diagrams', filename), image.buffer);
       const baseUrl = process.env.APP_URL || 'http://localhost:3001';
       thumbnail = `${baseUrl}/storage/diagrams/${filename}?v=${Date.now()}`;
     }

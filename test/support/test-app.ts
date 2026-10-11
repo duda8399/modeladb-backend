@@ -92,6 +92,7 @@ export async function registerAndLogin(
     email,
     password,
     token: login.body.accessToken,
+    refreshToken: login.body.refreshToken,
   };
 }
 

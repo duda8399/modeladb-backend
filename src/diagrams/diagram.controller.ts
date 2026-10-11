@@ -17,7 +17,8 @@ import {
   Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
+import { imageUploadOptions, MAX_THUMBNAIL_BYTES } from 'src/common/image-upload';
+import { DiagramEvents } from './diagram-events';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
 import { DiagramVersionService } from './diagram-version.service';
@@ -31,6 +32,7 @@ export class DiagramController {
   constructor(
     private diagramService: DiagramService,
     private versionService: DiagramVersionService,
+    private events: DiagramEvents,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -170,10 +172,7 @@ export class DiagramController {
   @UseGuards(JwtAuthGuard)
   @Put(':id/thumbnail')
   @UseInterceptors(
-    FileInterceptor('thumbnail', {
-      storage: memoryStorage(),
-      limits: { fileSize: 10 * 1024 * 1024 },
-    }),
+    FileInterceptor('thumbnail', imageUploadOptions(MAX_THUMBNAIL_BYTES)),
   )
   async updateThumbnail(
     @Param('id') id: string,
@@ -212,7 +211,20 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.diagramService.addCollaborator(id, userId, dto);
+      const collaborator = await this.diagramService.addCollaborator(
+        id,
+        userId,
+        dto,
+      );
+
+      this.events.accessChanged.next({
+        diagramId: id,
+        userId: collaborator.userId,
+        role: collaborator.role,
+        byUserId: userId,
+      });
+
+      return collaborator;
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível adicionar o colaborador',
@@ -262,12 +274,21 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.diagramService.updateCollaboratorRole(
+      const collaborator = await this.diagramService.updateCollaboratorRole(
         id,
         userId,
         collaboratorUserId,
         dto,
       );
+
+      this.events.accessChanged.next({
+        diagramId: id,
+        userId: collaboratorUserId,
+        role: collaborator.role,
+        byUserId: userId,
+      });
+
+      return collaborator;
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível atualizar a permissão',
@@ -292,11 +313,20 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.diagramService.removeCollaborator(
+      const result = await this.diagramService.removeCollaborator(
         id,
         userId,
         collaboratorUserId,
       );
+
+      this.events.accessChanged.next({
+        diagramId: id,
+        userId: collaboratorUserId,
+        role: null,
+        byUserId: userId,
+      });
+
+      return result;
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível remover o colaborador',
@@ -320,7 +350,11 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      return await this.diagramService.deleteByIdForUser(id, userId);
+      const result = await this.diagramService.deleteByIdForUser(id, userId);
+
+      this.events.deleted.next({ diagramId: id, byUserId: userId });
+
+      return result;
     } catch (error) {
       throw new HttpException(
         error?.message || 'Não foi possível remover o documento',

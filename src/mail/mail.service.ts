@@ -18,7 +18,11 @@ export class MailService {
   }
 
   async sendPasswordResetEmail(email: string, token: string) {
-    const resetLink = `${process.env.FRONT_URL}/reset-password?token=${token}`;
+    const frontUrl = (process.env.FRONT_URL || 'http://localhost:5173')
+      .split(',')[0]
+      .trim()
+      .replace(/\/$/, '');
+    const resetLink = `${frontUrl}/reset-password?token=${encodeURIComponent(token)}`;
 
     try {
       const response = await this.transporter.sendMail({

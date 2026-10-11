@@ -48,6 +48,34 @@ export class RealtimeGateway
     this.events.restored.subscribe((event) => {
       server.to(this.room(event.diagramId)).emit('document_restored', event);
     });
+
+    this.events.accessChanged.subscribe((event) => {
+      for (const socket of this.socketsInRoom(event.diagramId)) {
+        if (socket.data.userId !== event.userId) continue;
+
+        if (event.role) {
+          socket.data.role = event.role;
+          socket.emit('role_changed', {
+            diagramId: event.diagramId,
+            role: event.role,
+          });
+        } else {
+          this.evict(socket, event.diagramId, {
+            diagramId: event.diagramId,
+            reason: event.byUserId === event.userId ? 'left' : 'removed',
+          });
+        }
+      }
+    });
+
+    this.events.deleted.subscribe((event) => {
+      for (const socket of this.socketsInRoom(event.diagramId)) {
+        this.evict(socket, event.diagramId, {
+          diagramId: event.diagramId,
+          reason: 'deleted',
+        });
+      }
+    });
   }
 
   async handleConnection(client: CollabSocket) {
@@ -58,7 +86,15 @@ export class RealtimeGateway
         throw new Error('Token ausente');
       }
 
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync<{
+        sub?: string;
+        email?: string;
+        type?: string;
+      }>(token);
+
+      if (payload.type !== 'access' || !payload.sub) {
+        throw new Error('Token inválido');
+      }
 
       client.data.userId = payload.sub;
       client.data.email = payload.email;
@@ -133,13 +169,25 @@ export class RealtimeGateway
   @SubscribeMessage('cursor')
   handleCursor(
     @ConnectedSocket() client: CollabSocket,
-    @MessageBody() cursor: { x: number; y: number },
+    @MessageBody() cursor: { x?: unknown; y?: unknown },
   ) {
     const { diagramId, userId } = client.data;
 
-    if (!diagramId) return;
+    if (!diagramId || !userId) return;
 
-    client.to(this.room(diagramId)).emit('cursor', { userId, ...cursor });
+    const x = cursor?.x;
+    const y = cursor?.y;
+
+    if (
+      typeof x !== 'number' ||
+      typeof y !== 'number' ||
+      !Number.isFinite(x) ||
+      !Number.isFinite(y)
+    ) {
+      return;
+    }
+
+    client.to(this.room(diagramId)).emit('cursor', { userId, x, y });
   }
 
   private extractToken(client: Socket): string | undefined {
@@ -152,18 +200,39 @@ export class RealtimeGateway
     return header?.startsWith('Bearer ') ? header.slice(7) : undefined;
   }
 
-  private usersInRoom(
-    diagramId: string,
-  ): { userId: string; email?: string }[] {
-    const room = this.server.sockets.adapter.rooms.get(this.room(diagramId));
+  private socketsInRoom(diagramId: string): CollabSocket[] {
+    const room = this.server?.sockets.adapter.rooms.get(this.room(diagramId));
 
     if (!room) return [];
 
     return [...room]
-      .map(
-        (socketId) =>
-          (this.server.sockets.sockets.get(socketId) as CollabSocket)?.data,
-      )
+      .map((socketId) => this.server.sockets.sockets.get(socketId))
+      .filter((socket): socket is CollabSocket => Boolean(socket));
+  }
+
+  private evict(
+    socket: CollabSocket,
+    diagramId: string,
+    payload: { diagramId: string; reason: 'left' | 'removed' | 'deleted' },
+  ) {
+    const { userId } = socket.data;
+
+    socket.data.diagramId = undefined;
+    socket.data.role = undefined;
+    void socket.leave(this.room(diagramId));
+    socket.emit('access_revoked', payload);
+
+    if (userId) {
+      this.server.to(this.room(diagramId)).emit('presence', {
+        type: 'USER_LEFT',
+        userId,
+      });
+    }
+  }
+
+  private usersInRoom(diagramId: string): { userId: string; email?: string }[] {
+    return this.socketsInRoom(diagramId)
+      .map((socket) => socket.data)
       .filter((data): data is SocketData => Boolean(data?.userId))
       .map((data) => ({ userId: data.userId as string, email: data.email }));
   }

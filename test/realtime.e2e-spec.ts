@@ -261,66 +261,156 @@ describe('Gateway de tempo real (integração)', () => {
     });
   });
 
-  /**
-   * Limitações conhecidas, documentadas como `test.failing` (o teste descreve
-   * o comportamento desejado e hoje falha).
-   */
-  describe('limitações conhecidas', () => {
-    test.failing(
-      'um cliente não consegue se passar por outro no evento de cursor',
-      async () => {
-        const a = await join(owner);
-        const b = await join(viewer);
+  describe('controle de acesso em conexões abertas', () => {
+    it('um cliente não consegue se passar por outro no evento de cursor', async () => {
+      const a = await join(owner);
+      const b = await join(viewer);
 
-        const cursor = nextEvent(a.socket, 'cursor');
-        b.socket.emit('cursor', { x: 1, y: 1, userId: owner.id });
+      const cursor = nextEvent(a.socket, 'cursor');
+      b.socket.emit('cursor', { x: 1, y: 1, userId: owner.id });
 
-        expect((await cursor).userId).toBe(viewer.id);
-      },
-    );
+      expect(await cursor).toEqual({ userId: viewer.id, x: 1, y: 1 });
+    });
 
-    // O papel é lido uma única vez no join_diagram e fica guardado no socket.
-    test.failing(
-      'rebaixar um EDITOR para VIEWER bloqueia as operações já na conexão aberta',
-      async () => {
-        const target = await registerAndLogin(ctx, 'rebaixado');
-        await share(ctx, owner, diagramId, target, 'EDITOR');
+    it('descarta cursores com coordenadas inválidas', async () => {
+      const a = await join(owner);
+      const b = await join(viewer);
 
-        const a = await join(owner);
-        const b = await join(target);
+      const silence = expectNoEvent(a.socket, 'cursor');
+      b.socket.emit('cursor', { x: 'abc', y: null });
+      await silence;
+    });
 
-        await ctx
-          .http()
-          .patch(`/diagram/${diagramId}/collaborators/${target.id}`)
-          .set(auth(owner))
-          .send({ role: 'VIEWER' })
-          .expect(200);
+    it('rebaixar um EDITOR para VIEWER bloqueia as operações já na conexão aberta', async () => {
+      const target = await registerAndLogin(ctx, 'rebaixado');
+      await share(ctx, owner, diagramId, target, 'EDITOR');
 
-        const silence = expectNoEvent(a.socket, 'operation');
-        b.socket.emit('operation', sampleOperation(target.id));
-        await silence;
-      },
-    );
+      const a = await join(owner);
+      const b = await join(target);
 
-    test.failing(
-      'um colaborador removido deixa de receber as operações do diagrama',
-      async () => {
-        const target = await registerAndLogin(ctx, 'removido');
-        await share(ctx, owner, diagramId, target, 'VIEWER');
+      const roleChanged = nextEvent(b.socket, 'role_changed');
 
-        const a = await join(owner);
-        const b = await join(target);
+      await ctx
+        .http()
+        .patch(`/diagram/${diagramId}/collaborators/${target.id}`)
+        .set(auth(owner))
+        .send({ role: 'VIEWER' })
+        .expect(200);
 
-        await ctx
-          .http()
-          .delete(`/diagram/${diagramId}/collaborators/${target.id}`)
-          .set(auth(owner))
-          .expect(200);
+      expect(await roleChanged).toEqual({ diagramId, role: 'VIEWER' });
 
-        const silence = expectNoEvent(b.socket, 'operation');
-        a.socket.emit('operation', sampleOperation(owner.id));
-        await silence;
-      },
-    );
+      const silence = expectNoEvent(a.socket, 'operation');
+      b.socket.emit('operation', sampleOperation(target.id));
+      await silence;
+    });
+
+    it('promover um VIEWER para EDITOR libera as operações sem reconectar', async () => {
+      const target = await registerAndLogin(ctx, 'promovido');
+      await share(ctx, owner, diagramId, target, 'VIEWER');
+
+      const a = await join(owner);
+      const b = await join(target);
+
+      const roleChanged = nextEvent(b.socket, 'role_changed');
+
+      await ctx
+        .http()
+        .patch(`/diagram/${diagramId}/collaborators/${target.id}`)
+        .set(auth(owner))
+        .send({ role: 'EDITOR' })
+        .expect(200);
+
+      await roleChanged;
+
+      const received = nextEvent(a.socket, 'operation');
+      b.socket.emit('operation', sampleOperation(target.id));
+      await received;
+    });
+
+    it('um colaborador removido deixa de receber as operações do diagrama', async () => {
+      const target = await registerAndLogin(ctx, 'removido');
+      await share(ctx, owner, diagramId, target, 'VIEWER');
+
+      const a = await join(owner);
+      const b = await join(target);
+
+      const revoked = nextEvent(b.socket, 'access_revoked');
+      const left = nextEvent(
+        a.socket,
+        'presence',
+        2000,
+        (p: { type: string; userId?: string }) =>
+          p.type === 'USER_LEFT' && p.userId === target.id,
+      );
+
+      await ctx
+        .http()
+        .delete(`/diagram/${diagramId}/collaborators/${target.id}`)
+        .set(auth(owner))
+        .expect(200);
+
+      expect(await revoked).toEqual({ diagramId, reason: 'removed' });
+      await left;
+
+      const silence = expectNoEvent(b.socket, 'operation');
+      a.socket.emit('operation', sampleOperation(owner.id));
+      await silence;
+    });
+
+    it('um colaborador removido não consegue mais enviar operações', async () => {
+      const target = await registerAndLogin(ctx, 'removido-editor');
+      await share(ctx, owner, diagramId, target, 'EDITOR');
+
+      const a = await join(owner);
+      const b = await join(target);
+
+      const revoked = nextEvent(b.socket, 'access_revoked');
+
+      await ctx
+        .http()
+        .delete(`/diagram/${diagramId}/collaborators/${target.id}`)
+        .set(auth(owner))
+        .expect(200);
+
+      await revoked;
+
+      const silence = expectNoEvent(a.socket, 'operation');
+      b.socket.emit('operation', sampleOperation(target.id));
+      await silence;
+    });
+
+    it('quem sai do diagrama recebe o motivo "left"', async () => {
+      const target = await registerAndLogin(ctx, 'saiu');
+      await share(ctx, owner, diagramId, target, 'EDITOR');
+
+      const b = await join(target);
+      const revoked = nextEvent(b.socket, 'access_revoked');
+
+      await ctx
+        .http()
+        .delete(`/diagram/${diagramId}/collaborators/${target.id}`)
+        .set(auth(target))
+        .expect(200);
+
+      expect(await revoked).toEqual({ diagramId, reason: 'left' });
+    });
+
+    it('excluir o diagrama desconecta todos da sala', async () => {
+      const temp = await createDiagram(ctx, owner, 'Diagrama descartável');
+      await share(ctx, owner, temp, editor, 'EDITOR');
+
+      const b = await join(editor, temp);
+      const revoked = nextEvent(b.socket, 'access_revoked');
+
+      await ctx.http().delete(`/diagram/${temp}`).set(auth(owner)).expect(200);
+
+      expect(await revoked).toEqual({ diagramId: temp, reason: 'deleted' });
+    });
+
+    it('recusa a conexão com um token que não é de acesso', async () => {
+      const socket = track(connectSocket(ctx, stranger.refreshToken));
+      const disconnected = nextEvent(socket, 'disconnect');
+      await disconnected;
+    });
   });
 });

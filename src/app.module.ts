@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -6,23 +7,28 @@ import { UserModule } from './users/user.module';
 import { DiagramModule } from './diagrams/diagram.module';
 import { OpenAIModule } from './openai/openai.module';
 import { RealtimeModule } from './realtime/realtime.module';
+import { accessTokenSecret } from './auth/jwt-secrets';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: () => ({ secret: accessTokenSecret() }),
+    }),
     AuthModule,
     UserModule,
     OpenAIModule,
     DiagramModule,
     RealtimeModule,
-    JwtModule.register({
-      global: true,
-      secret: process.env.JWT_SECRET || 'teste',
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
   ],
-  controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ whitelist: true, transform: true }),
+    },
+  ],
 })
 export class AppModule {}

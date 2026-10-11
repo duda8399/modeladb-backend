@@ -22,6 +22,24 @@ export class OpenAIService {
     return new OpenAI({ apiKey });
   }
 
+  private async requireOpenAIKey(userId: string): Promise<string> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new BadRequestException('Usuário não encontrado');
+    }
+
+    const apiKey = await this.userService.getOpenAIKey(userId);
+
+    if (!apiKey) {
+      throw new BadRequestException(
+        'Nenhuma chave da OpenAI cadastrada para este usuário',
+      );
+    }
+
+    return apiKey;
+  }
+
   async analyzeDiagram(
     userId: string,
     diagram: {
@@ -43,24 +61,12 @@ export class OpenAIService {
       );
     }
 
-    const user = await this.userService.findById(userId);
-
-    if (!user) {
-      throw new BadRequestException('Usuário não encontrado');
-    }
-
-    if (!user.openaiToken) {
-      throw new BadRequestException(
-        'Nenhuma chave da OpenAI cadastrada para este usuário',
-      );
-    }
+    const apiKey = await this.requireOpenAIKey(userId);
 
     let completion: OpenAI.Chat.Completions.ChatCompletion;
 
     try {
-      completion = await this.createClient(
-        user.openaiToken,
-      ).chat.completions.create({
+      completion = await this.createClient(apiKey).chat.completions.create({
         model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
         temperature: 0.2,
         response_format: {
@@ -119,19 +125,9 @@ export class OpenAIService {
       throw new BadRequestException('A descrição não pode estar vazia');
     }
 
-    const user = await this.userService.findById(userId);
+    const apiKey = await this.requireOpenAIKey(userId);
 
-    if (!user) {
-      throw new BadRequestException('Usuário não encontrado');
-    }
-
-    if (!user.openaiToken) {
-      throw new BadRequestException(
-        'Nenhuma chave da OpenAI cadastrada para este usuário',
-      );
-    }
-
-    const openai = new OpenAI({ apiKey: user.openaiToken });
+    const openai = this.createClient(apiKey);
 
     let completion: OpenAI.Chat.Completions.ChatCompletion;
 

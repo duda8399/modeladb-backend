@@ -25,10 +25,11 @@
 | `test/auth.e2e-spec.ts` | Cadastro, login, hash bcrypt, tokens inválidos/forjados/expirados, tipos de token (acesso, refresh, redefinição), rotação e logout do refresh, recuperação de senha sem revelar e-mails, perfil só do próprio usuário, chave da OpenAI cifrada, upload de avatar, ValidationPipe |
 | `test/diagram-permissions.e2e-spec.ts` | Matriz papel × ação (dono, editor, leitor, sem acesso) × 7 ações = 28 casos |
 | `test/diagrams.e2e-spec.ts` | Persistência dos nós/arestas, listagens, convites, troca de papel, remoção, exclusão em cascata |
-| `test/realtime.e2e-spec.ts` | Handshake com JWT, entrada na sala, presença, difusão de operações, ordem FIFO, isolamento entre salas, bloqueio do leitor, troca de papel e remoção aplicadas na conexão aberta, cursor sem falsificação |
+| `test/realtime.e2e-spec.ts` | Handshake com JWT, entrada na sala, presença, difusão de operações, ordem FIFO, isolamento entre salas, bloqueio do leitor, troca de papel e remoção aplicadas na conexão aberta, cursor sem falsificação, reconexão com reenvio das operações perdidas |
 | `test/versions.e2e-spec.ts` | Histórico de versões: versão automática com intervalo e limite de 50, versões manuais, permissões por papel, restauração com backup e aviso em tempo real, exclusão em cascata |
 | `test/ai-analysis.e2e-spec.ts` | Análise do modelo pela IA com a OpenAI simulada: JSON Schema estrito, modelo compacto, validação das ações, erros (sem tabelas, sem chave, falha, recusa, JSON inválido) |
 | `src/openai/diagram-analysis.spec.ts` | Compactação do modelo enviado à IA e descarte de ações que citam tabelas/colunas inexistentes |
+| `src/realtime/operation-log.spec.ts` | Log de operações por diagrama: sequência, época, operações perdidas, limite de tamanho e limpeza de salas ociosas |
 | `src/common/secret-box.spec.ts` | Cifragem AES-256-GCM da chave da OpenAI, leitura de valores legados e detecção de adulteração |
 | `src/common/image-upload.spec.ts` | Detecção de imagem pela assinatura do arquivo, sem confiar na extensão ou no mimetype |
 | `src/diagrams/diagram.service.spec.ts` | Regras de papel e normalização de dados, isoladas do banco |

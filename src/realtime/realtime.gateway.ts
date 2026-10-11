@@ -12,6 +12,10 @@ import {
 import { Server, Socket } from 'socket.io';
 import { DiagramService } from 'src/diagrams/diagram.service';
 import { DiagramEvents } from 'src/diagrams/diagram-events';
+import { OperationLog, SyncCursor } from './operation-log';
+
+const LOG_IDLE_MS = 30 * 60 * 1000;
+const LOG_PRUNE_INTERVAL_MS = 5 * 60 * 1000;
 
 type DiagramRole = 'OWNER' | 'EDITOR' | 'VIEWER';
 
@@ -42,12 +46,22 @@ export class RealtimeGateway
     private jwtService: JwtService,
     private diagramService: DiagramService,
     private events: DiagramEvents,
+    private operationLog: OperationLog,
   ) {}
 
   afterInit(server: Server) {
     this.events.restored.subscribe((event) => {
+      this.operationLog.reset(event.diagramId);
       server.to(this.room(event.diagramId)).emit('document_restored', event);
     });
+
+    const pruneTimer = setInterval(() => {
+      this.operationLog.prune(
+        LOG_IDLE_MS,
+        (diagramId) => this.socketsInRoom(diagramId).length > 0,
+      );
+    }, LOG_PRUNE_INTERVAL_MS);
+    pruneTimer.unref();
 
     this.events.accessChanged.subscribe((event) => {
       for (const socket of this.socketsInRoom(event.diagramId)) {
@@ -69,6 +83,7 @@ export class RealtimeGateway
     });
 
     this.events.deleted.subscribe((event) => {
+      this.operationLog.drop(event.diagramId);
       for (const socket of this.socketsInRoom(event.diagramId)) {
         this.evict(socket, event.diagramId, {
           diagramId: event.diagramId,
@@ -118,7 +133,7 @@ export class RealtimeGateway
   @SubscribeMessage('join_diagram')
   async joinDiagram(
     @ConnectedSocket() client: CollabSocket,
-    @MessageBody() data: { diagramId?: string },
+    @MessageBody() data: { diagramId?: string; since?: SyncCursor },
   ) {
     const { userId, email } = client.data;
     const diagramId = data?.diagramId;
@@ -136,6 +151,8 @@ export class RealtimeGateway
     client.data.role = role;
 
     await client.join(this.room(diagramId));
+
+    client.emit('sync', this.operationLog.since(diagramId, data?.since));
 
     client.to(this.room(diagramId)).emit('presence', {
       type: 'USER_JOINED',
@@ -163,7 +180,11 @@ export class RealtimeGateway
       return;
     }
 
-    client.to(this.room(diagramId)).emit('operation', operation);
+    const meta = this.operationLog.append(diagramId, operation);
+
+    client.to(this.room(diagramId)).emit('operation', operation, meta);
+
+    return meta;
   }
 
   @SubscribeMessage('cursor')

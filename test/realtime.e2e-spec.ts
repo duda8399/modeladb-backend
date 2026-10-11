@@ -413,4 +413,98 @@ describe('Gateway de tempo real (integração)', () => {
       await disconnected;
     });
   });
+
+  describe('reconexão sem perda de operações', () => {
+    type Sync = {
+      epoch: string;
+      seq: number;
+      ops: { opId: string }[];
+      complete: boolean;
+      initial: boolean;
+    };
+
+    async function joinWithSync(user: TestUser, since?: object) {
+      const socket = track(connectSocket(ctx, user.token));
+      await nextEvent(socket, 'connect');
+      const sync = nextEvent<Sync>(socket, 'sync');
+      socket.emit('join_diagram', { diagramId, since });
+      return { socket, sync: await sync };
+    }
+
+    it('a entrada informa a posição atual do log', async () => {
+      const { sync } = await joinWithSync(owner);
+
+      expect(sync).toEqual(
+        expect.objectContaining({
+          epoch: expect.any(String),
+          seq: expect.any(Number),
+          ops: [],
+          complete: true,
+          initial: true,
+        }),
+      );
+    });
+
+    it('cada operação repassada traz época e sequência', async () => {
+      const a = await joinWithSync(owner);
+      const b = await joinWithSync(editor);
+
+      const received = new Promise<unknown[]>((resolve) =>
+        a.socket.once('operation', (...args: unknown[]) => resolve(args)),
+      );
+      const ack = await b.socket.emitWithAck(
+        'operation',
+        sampleOperation(editor.id),
+      );
+      const [, meta] = await received;
+
+      expect(meta).toEqual({ epoch: a.sync.epoch, seq: a.sync.seq + 1 });
+      expect(ack).toEqual(meta);
+    });
+
+    it('quem reconecta recebe as operações feitas enquanto esteve fora', async () => {
+      const a = await joinWithSync(owner);
+      const b = await joinWithSync(editor);
+      b.socket.disconnect();
+
+      const first = sampleOperation(owner.id, 1);
+      const second = sampleOperation(owner.id, 2);
+      await a.socket.emitWithAck('operation', first);
+      await a.socket.emitWithAck('operation', second);
+
+      const back = await joinWithSync(editor, {
+        epoch: b.sync.epoch,
+        seq: b.sync.seq,
+      });
+
+      expect(back.sync.complete).toBe(true);
+      expect(back.sync.ops.map((op) => op.opId)).toEqual([
+        first.opId,
+        second.opId,
+      ]);
+    });
+
+    it('operações de um leitor não entram no log', async () => {
+      const a = await joinWithSync(owner);
+      const v = await joinWithSync(viewer);
+
+      const rejected = nextEvent(v.socket, 'error');
+      v.socket.emit('operation', sampleOperation(viewer.id));
+      await rejected;
+
+      const back = await joinWithSync(owner, {
+        epoch: a.sync.epoch,
+        seq: a.sync.seq,
+      });
+
+      expect(back.sync.ops).toEqual([]);
+    });
+
+    it('uma época desconhecida pede recarga completa', async () => {
+      const { sync } = await joinWithSync(owner, { epoch: 'antiga', seq: 3 });
+
+      expect(sync.complete).toBe(false);
+      expect(sync.ops).toEqual([]);
+    });
+  });
 });

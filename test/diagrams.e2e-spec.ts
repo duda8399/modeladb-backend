@@ -29,6 +29,47 @@ describe('Diagramas e compartilhamento (integração)', () => {
   });
 
   describe('persistência', () => {
+    it('salva views (viewNode) e índices das entidades', async () => {
+      const diagramId = await createDiagram(ctx, owner);
+
+      const nodes = [
+        {
+          id: 'cliente',
+          type: 'entityNode',
+          position: { x: 0, y: 0 },
+          data: {
+            name: 'cliente',
+            fields: [{ id: 'f1', name: 'email', type: 'VARCHAR' }],
+            indexes: [{ id: 'i1', name: 'idx_email', columns: ['f1'], unique: false }],
+          },
+        },
+        {
+          id: 'v1',
+          type: 'viewNode',
+          position: { x: 400, y: 0 },
+          data: { name: 'clientes_ativos', sql: 'SELECT email FROM cliente' },
+        },
+      ];
+
+      await ctx
+        .http()
+        .put(`/diagram/${diagramId}`)
+        .set(auth(owner))
+        .send({ nodes, edges: [] })
+        .expect(200);
+
+      const res = await ctx
+        .http()
+        .get(`/diagram/${diagramId}`)
+        .set(auth(owner))
+        .expect(200);
+
+      expect(res.body.nodes).toEqual([
+        expect.objectContaining({ id: 'cliente', data: nodes[0].data }),
+        expect.objectContaining({ id: 'v1', type: 'viewNode', data: nodes[1].data }),
+      ]);
+    });
+
     it('salva e recupera nós e arestas sem perder os metadados de CRDT', async () => {
       const diagramId = await createDiagram(ctx, owner);
 

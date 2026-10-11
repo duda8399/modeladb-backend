@@ -27,6 +27,8 @@
 | `test/diagrams.e2e-spec.ts` | Persistência dos nós/arestas, listagens, convites, troca de papel, remoção, exclusão em cascata |
 | `test/realtime.e2e-spec.ts` | Handshake com JWT, entrada na sala, presença, difusão de operações, ordem FIFO, isolamento entre salas, bloqueio do leitor |
 | `test/versions.e2e-spec.ts` | Histórico de versões: versão automática com intervalo e limite de 50, versões manuais, permissões por papel, restauração com backup e aviso em tempo real, exclusão em cascata |
+| `test/ai-analysis.e2e-spec.ts` | Análise do modelo pela IA com a OpenAI simulada: JSON Schema estrito, modelo compacto, validação das ações, erros (sem tabelas, sem chave, falha, recusa, JSON inválido) |
+| `src/openai/diagram-analysis.spec.ts` | Compactação do modelo enviado à IA e descarte de ações que citam tabelas/colunas inexistentes |
 | `src/diagrams/diagram.service.spec.ts` | Regras de papel e normalização de dados, isoladas do banco |
 | `test/perf/realtime-latency.ts` | Gera `reports/perf/realtime-latency.{md,csv,json}` e histogramas |
 

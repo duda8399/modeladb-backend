@@ -16,6 +16,23 @@ export type DiagramAccessChangedEvent = {
   byUserId: string;
 };
 
+export type DiagramInvitedEvent = {
+  userId: string;
+  invitation: {
+    diagramId: string;
+    diagramName: string;
+    role: DiagramRole;
+    invitedAt: Date;
+    owner: { id: string; name: string; email: string } | null;
+  };
+};
+
+export type DiagramRenamedEvent = {
+  diagramId: string;
+  name: string;
+  byUserId: string;
+};
+
 export type DiagramDeletedEvent = {
   diagramId: string;
   byUserId: string;
@@ -26,4 +43,6 @@ export class DiagramEvents {
   readonly restored = new Subject<DiagramRestoredEvent>();
   readonly accessChanged = new Subject<DiagramAccessChangedEvent>();
   readonly deleted = new Subject<DiagramDeletedEvent>();
+  readonly invited = new Subject<DiagramInvitedEvent>();
+  readonly renamed = new Subject<DiagramRenamedEvent>();
 }

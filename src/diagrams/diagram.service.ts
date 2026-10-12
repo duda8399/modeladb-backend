@@ -1,7 +1,11 @@
 import { mkdirSync, writeFileSync } from 'fs';
 import { extname, join } from 'path';
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { Diagram, DiagramRole } from '@prisma/client';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { Diagram, DiagramRole, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 import { DiagramDto } from './dto/diagram.dto';
 import { UserService } from 'src/users/user.service';
@@ -113,9 +117,14 @@ export class DiagramService {
     if (this.storageService && process.env.AWS_BUCKET_NAME) {
       thumbnail = await this.storageService.upload(image, `diagrams/${id}`);
     } else {
-      mkdirSync(join(process.cwd(), 'storage', 'diagrams'), { recursive: true });
+      mkdirSync(join(process.cwd(), 'storage', 'diagrams'), {
+        recursive: true,
+      });
       const filename = `${id}${extname(image.originalname)}`;
-      writeFileSync(join(process.cwd(), 'storage', 'diagrams', filename), image.buffer);
+      writeFileSync(
+        join(process.cwd(), 'storage', 'diagrams', filename),
+        image.buffer,
+      );
       const baseUrl = process.env.APP_URL || 'http://localhost:3001';
       thumbnail = `${baseUrl}/storage/diagrams/${filename}?v=${Date.now()}`;
     }
@@ -199,13 +208,124 @@ export class DiagramService {
       throw new ForbiddenException('O dono já tem acesso total ao diagrama.');
     }
 
-    return this.prisma.diagramCollaborator.upsert({
+    const existing = await this.prisma.diagramCollaborator.findUnique({
+      where: { diagramId_userId: { diagramId, userId: user.id } },
+    });
+
+    const collaborator = await this.prisma.diagramCollaborator.upsert({
       where: { diagramId_userId: { diagramId, userId: user.id } },
       update: { role: dto.role ?? DiagramRole.EDITOR },
       create: {
         diagramId,
         userId: user.id,
         role: dto.role ?? DiagramRole.EDITOR,
+        invitedById: requesterId,
+        pendingNotice: true,
+      },
+    });
+
+    return { collaborator, isNew: !existing, diagram };
+  }
+
+  async listInvitations(userId: string) {
+    const invitations = await this.prisma.diagramCollaborator.findMany({
+      where: { userId, pendingNotice: true },
+      include: {
+        diagram: {
+          select: {
+            id: true,
+            name: true,
+            User: { select: { id: true, name: true, email: true } },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return invitations.map((invitation) => this.toInvitation(invitation));
+  }
+
+  async markInvitationsSeen(userId: string, diagramIds?: string[]) {
+    const { count } = await this.prisma.diagramCollaborator.updateMany({
+      where: {
+        userId,
+        pendingNotice: true,
+        ...(diagramIds?.length ? { diagramId: { in: diagramIds } } : {}),
+      },
+      data: { pendingNotice: false },
+    });
+
+    return { updated: count };
+  }
+
+  toInvitation(invitation: {
+    diagramId: string;
+    role: DiagramRole;
+    createdAt: Date;
+    diagram: {
+      name: string;
+      User: { id: string; name: string; email: string } | null;
+    };
+  }) {
+    return {
+      diagramId: invitation.diagramId,
+      diagramName: invitation.diagram.name,
+      role: invitation.role,
+      invitedAt: invitation.createdAt,
+      owner: invitation.diagram.User,
+    };
+  }
+
+  async findOwnerSummary(userId: string) {
+    return this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true },
+    });
+  }
+
+  async rename(id: string, name: string, userId: string) {
+    const diagram = await this.findById(id);
+
+    if (!diagram) {
+      throw new NotFoundException('Diagrama não encontrado.');
+    }
+
+    const role = await this.resolveRole(diagram, userId);
+
+    if (role !== 'OWNER' && role !== DiagramRole.EDITOR) {
+      throw new ForbiddenException(
+        'Sem permissão para renomear este diagrama.',
+      );
+    }
+
+    return this.prisma.diagram.update({
+      where: { id },
+      data: { name: name.trim() },
+    });
+  }
+
+  async duplicate(id: string, userId: string, name?: string) {
+    const diagram = await this.findById(id);
+
+    if (!diagram) {
+      throw new NotFoundException('Diagrama não encontrado.');
+    }
+
+    const role = await this.resolveRole(diagram, userId);
+
+    if (!role) {
+      throw new ForbiddenException('Sem acesso a este diagrama.');
+    }
+
+    const copyName = name?.trim() || `Cópia de ${diagram.name}`.slice(0, 120);
+
+    return this.prisma.diagram.create({
+      data: {
+        name: copyName,
+        userId,
+        nodes: diagram.nodes as Prisma.NodeCreateInput[],
+        edges: diagram.edges as Prisma.EdgeCreateInput[],
+        thumbnail: diagram.thumbnail,
       },
     });
   }
@@ -226,7 +346,9 @@ export class DiagramService {
     return this.prisma.diagramCollaborator.findMany({
       where: { diagramId },
       include: {
-        user: { select: { id: true, name: true, email: true, avatarUrl: true } },
+        user: {
+          select: { id: true, name: true, email: true, avatarUrl: true },
+        },
       },
     });
   }

@@ -62,8 +62,10 @@ model DiagramCollaborator {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   diagramId String      @db.ObjectId
   userId    String      @db.ObjectId
-  role      DiagramRole @default(EDITOR)
-  createdAt DateTime    @default(now())
+  role          DiagramRole @default(EDITOR)
+  invitedById   String?     @db.ObjectId
+  pendingNotice Boolean?
+  createdAt     DateTime    @default(now())
 
   diagram Diagram @relation(fields: [diagramId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -82,6 +82,16 @@ export class RealtimeGateway
       }
     });
 
+    this.events.invited.subscribe((event) => {
+      server
+        .to(this.userRoom(event.userId))
+        .emit('invitation_received', event.invitation);
+    });
+
+    this.events.renamed.subscribe((event) => {
+      server.to(this.room(event.diagramId)).emit('document_renamed', event);
+    });
+
     this.events.deleted.subscribe((event) => {
       this.operationLog.drop(event.diagramId);
       for (const socket of this.socketsInRoom(event.diagramId)) {
@@ -113,6 +123,7 @@ export class RealtimeGateway
 
       client.data.userId = payload.sub;
       client.data.email = payload.email;
+      await client.join(this.userRoom(payload.sub));
     } catch {
       client.emit('error', { message: 'Não autorizado' });
       client.disconnect();
@@ -256,6 +267,10 @@ export class RealtimeGateway
       .map((socket) => socket.data)
       .filter((data): data is SocketData => Boolean(data?.userId))
       .map((data) => ({ userId: data.userId as string, email: data.email }));
+  }
+
+  private userRoom(userId: string) {
+    return `user:${userId}`;
   }
 
   private room(diagramId: string) {

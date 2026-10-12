@@ -14,10 +14,14 @@ import {
   Request,
   UnauthorizedException,
   ForbiddenException,
+  NotFoundException,
   Delete,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { imageUploadOptions, MAX_THUMBNAIL_BYTES } from 'src/common/image-upload';
+import {
+  imageUploadOptions,
+  MAX_THUMBNAIL_BYTES,
+} from 'src/common/image-upload';
 import { DiagramEvents } from './diagram-events';
 import { DiagramDto } from './dto/diagram.dto';
 import { DiagramService } from './diagram.service';
@@ -25,6 +29,8 @@ import { DiagramVersionService } from './diagram-version.service';
 import { UpdateDiagramDto } from './dto/update-diagram.dto';
 import { AddCollaboratorDto } from './dto/add-collaborator.dto';
 import { UpdateCollaboratorRoleDto } from './dto/update-collaborator-role.dto';
+import { DuplicateDiagramDto } from './dto/duplicate-diagram.dto';
+import { MarkInvitationsSeenDto } from './dto/mark-invitations-seen.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('diagram')
@@ -88,6 +94,95 @@ export class DiagramController {
       throw new HttpException(
         error?.message || 'Não foi possível buscar os diagramas compartilhados',
         HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('invitations')
+  async getInvitations(@Request() req: { user?: { sub?: string } }) {
+    const userId = req.user?.sub;
+
+    if (!userId) {
+      throw new UnauthorizedException('Usuário não autenticado');
+    }
+
+    return this.diagramService.listInvitations(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('invitations/seen')
+  async markInvitationsSeen(
+    @Body() dto: MarkInvitationsSeenDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    const userId = req.user?.sub;
+
+    if (!userId) {
+      throw new UnauthorizedException('Usuário não autenticado');
+    }
+
+    return this.diagramService.markInvitationsSeen(userId, dto.diagramIds);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async rename(
+    @Param('id') id: string,
+    @Body() dto: DiagramDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      const renamed = await this.diagramService.rename(id, dto.name, userId);
+
+      this.events.renamed.next({
+        diagramId: id,
+        name: renamed.name,
+        byUserId: userId,
+      });
+
+      return renamed;
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível renomear o diagrama',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : error instanceof NotFoundException
+            ? HttpStatus.NOT_FOUND
+            : HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/duplicate')
+  async duplicate(
+    @Param('id') id: string,
+    @Body() dto: DuplicateDiagramDto,
+    @Request() req: { user?: { sub?: string } },
+  ) {
+    try {
+      const userId = req.user?.sub;
+
+      if (!userId) {
+        throw new UnauthorizedException('Usuário não autenticado');
+      }
+
+      return await this.diagramService.duplicate(id, userId, dto.name);
+    } catch (error) {
+      throw new HttpException(
+        error?.message || 'Não foi possível duplicar o diagrama',
+        error instanceof ForbiddenException
+          ? HttpStatus.FORBIDDEN
+          : error instanceof NotFoundException
+            ? HttpStatus.NOT_FOUND
+            : HttpStatus.BAD_REQUEST,
       );
     }
   }
@@ -211,11 +306,21 @@ export class DiagramController {
         throw new UnauthorizedException('Usuário não autenticado');
       }
 
-      const collaborator = await this.diagramService.addCollaborator(
-        id,
-        userId,
-        dto,
-      );
+      const { collaborator, isNew, diagram } =
+        await this.diagramService.addCollaborator(id, userId, dto);
+
+      if (isNew) {
+        const owner = await this.diagramService.findOwnerSummary(
+          diagram.userId,
+        );
+        this.events.invited.next({
+          userId: collaborator.userId,
+          invitation: this.diagramService.toInvitation({
+            ...collaborator,
+            diagram: { name: diagram.name, User: owner },
+          }),
+        });
+      }
 
       this.events.accessChanged.next({
         diagramId: id,

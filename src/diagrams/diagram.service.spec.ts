@@ -156,9 +156,25 @@ describe('DiagramService (unitário)', () => {
 
       expect(prisma.diagramCollaborator.upsert).toHaveBeenCalledWith(
         expect.objectContaining({
-          create: { diagramId: 'd1', userId: 'u-existe', role: 'EDITOR' },
+          create: {
+            diagramId: 'd1',
+            userId: 'u-existe',
+            role: 'EDITOR',
+            invitedById: OWNER_ID,
+            pendingNotice: true,
+          },
         }),
       );
+    });
+
+    it('marca o convite como novo só quando o colaborador ainda não existia', async () => {
+      const { service } = build({ 'u-existe': 'VIEWER' });
+
+      const result = await service.addCollaborator('d1', OWNER_ID, {
+        email: 'existe@x.com',
+      });
+
+      expect(result.isNew).toBe(false);
     });
 
     it('só o dono pode convidar', async () => {

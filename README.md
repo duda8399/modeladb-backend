@@ -1,98 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ModelaDB – Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST e *gateway* de tempo real do **ModelaDB**, plataforma web para a modelagem
+colaborativa de bancos de dados relacionais com apoio de IA generativa.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Desenvolvido como Trabalho de Conclusão de Curso de Maria Eduarda Leal Silva
+(IFMG – Campus Formiga, 2026).
 
-## Description
+- Frontend: https://github.com/duda8399/modeladb-frontend
+- Aplicação publicada: https://modeladb-frontend.onrender.com
+- **Versão avaliada no TCC: tag [`v1.0.0`](https://github.com/duda8399/modeladb-backend/releases/tag/v1.0.0)**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tecnologias
 
-## Project setup
+NestJS 11, Socket.IO 4.8, Prisma 6.13 sobre MongoDB, Passport/JWT, bcrypt,
+SDK da OpenAI, AWS SDK (S3) e Nodemailer. Node.js 20.19.6 (ver `.nvmrc`).
+
+## Executar a aplicação
 
 ```bash
-$ npm install
+git clone https://github.com/duda8399/modeladb-backend.git
+cd modeladb-backend
+git checkout v1.0.0        # versão avaliada no TCC
+nvm use                    # Node 20.19.6
+npm install
+cp .env.example .env       # preencha as variáveis abaixo
+npx prisma generate
+npm run start:dev          # API em http://localhost:3001
 ```
 
-## Compile and run the project
+### Variáveis de ambiente
 
-```bash
-# development
-$ npm run start
+| Variável | Uso |
+|---|---|
+| `DATABASE_URL` | String de conexão do MongoDB (Atlas ou local, com *replica set*) |
+| `JWT_SECRET`, `JWT_REFRESH_SECRET`, `JWT_RESET_SECRET` | Segredos dos tokens de acesso, de renovação e de redefinição de senha |
+| `ENCRYPTION_KEY` | Chave usada para cifrar (AES-256-GCM) as chaves da OpenAI dos usuários |
+| `OPENAI_MODEL` | Modelo usado pela IA (opcional; padrão `gpt-4o-mini`) |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_BUCKET_NAME` | Armazenamento das fotos de perfil no Amazon S3 |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_USER`, `MAIL_PASS`, `MAIL_FROM` | Servidor SMTP para os e-mails de recuperação de senha |
+| `FRONT_URL`, `APP_URL` | Endereços do frontend e da API |
+| `PORT` | Porta da API (opcional; padrão 3001) |
+| `AUTO_VERSION_INTERVAL_MINUTES` | Intervalo entre versões automáticas, em minutos (opcional; padrão 10) |
 
-# watch mode
-$ npm run start:dev
+A chave da OpenAI não é configurada no servidor: cada usuário informa a sua
+na tela de perfil.
 
-# production mode
-$ npm run start:prod
-```
+## Reproduzir os testes e medições do TCC (Capítulo 5)
 
-## Run tests
+Os testes **não precisam de nenhum serviço externo**: sobem um MongoDB em memória
+(`mongodb-memory-server`) e substituem e-mail, S3 e OpenAI por dublês. Não é
+necessário preencher o `.env` para executá-los.
 
-```bash
-# unit tests
-$ npm run test
+| Item do TCC | Comando | Saída |
+|---|---|---|
+| Testes unitários do backend | `npm test` | terminal |
+| Testes de integração (API REST e gateway Socket.IO) | `npm run test:e2e` | terminal |
+| Latência e vazão do gateway com 2 a 100 clientes | `npm run perf:realtime` | `reports/perf/realtime-latency.{md,csv,json}` e histogramas |
 
-# e2e tests
-$ npm run test:e2e
+Os testes ponta a ponta, de compatibilidade do SQL e de latência percebida são
+executados a partir do repositório do frontend (ver o README de lá). Eles usam
+`npm run test:server`, que sobe este backend isolado na porta 3101.
 
-# test coverage
-$ npm run test:cov
-```
+A descrição de cada suíte está em [`TESTES.md`](TESTES.md).
 
-## Deployment
+As medições do TCC foram feitas em um Intel Core i5-1345U (12 núcleos lógicos),
+31 GB de RAM e Node.js 20.19.6, com servidor e clientes na mesma máquina.
+Valores absolutos variam conforme o hardware.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## Licença
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT – ver [`LICENSE`](LICENSE).

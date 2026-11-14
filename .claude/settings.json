@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npx tsx *)",
-      "Bash(cp /tmp/claude-1001/-home-maria-Documentos-TCC---2026-modeladb-backend/9e18acb9-6ce4-4a39-b5ae-17f22ff652c9/scratchpad/find_collab.ts \"/home/maria/Documentos/TCC - 2026/modeladb-backend/find_collab_tmp.ts\")",
-      "Bash(timeout 30 npm view playwright-core version)"
-    ]
-  }
-}

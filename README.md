@@ -55,7 +55,7 @@ necessário preencher o `.env` para executá-los.
 |---|---|---|
 | Testes unitários do backend | `npm test` | terminal |
 | Testes de integração (API REST e gateway Socket.IO) | `npm run test:e2e` | terminal |
-| Latência e vazão do gateway com 2 a 100 clientes | `npm run perf:realtime` | `reports/perf/realtime-latency.{md,csv,json}` e histogramas |
+| Latência e vazão do gateway com 2 a 100 clientes | `npm run perf:realtime` | `reports/perf/realtime-latency.{md,csv,json}`, `realtime-latency-repeticoes.csv` e histogramas |
 
 Os testes ponta a ponta, de compatibilidade do SQL e de latência percebida são
 executados a partir do repositório do frontend (ver o README de lá). Eles usam

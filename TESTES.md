@@ -15,7 +15,7 @@
 | `npm test` | Testes unitários (`src/**/*.spec.ts`), com Prisma simulado | ~1 s |
 | `npm run test:e2e` | Integração: API HTTP + gateway Socket.IO com a aplicação real | ~15 s |
 | `npm run test:e2e:cov` | O mesmo, com relatório de cobertura em `coverage-e2e/` | ~20 s |
-| `npm run perf:realtime` | Latência e vazão do gateway com 2 a 100 clientes | ~1 min |
+| `npm run perf:realtime` | Latência e vazão do gateway com 2 a 100 clientes, 10 repetições por cenário (`PERF_REPEATS`) com média, desvio padrão, CV e IC 95% | ~8 min |
 | `npm run test:server` | Sobe o backend isolado em `:3101` (usado pelo Playwright do frontend) | — |
 
 ## O que cada suíte cobre

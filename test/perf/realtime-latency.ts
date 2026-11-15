@@ -107,8 +107,8 @@ function dispersion(raw: number[]): Dispersion {
     mean: round(mean),
     sd: round(sd),
     cvPercent: mean !== 0 ? round((sd / mean) * 100) : 0,
-    min: round(n ? Math.min(...values) : NaN),
-    max: round(n ? Math.max(...values) : NaN),
+    min: round(n ? values.reduce((a, b) => Math.min(a, b)) : NaN),
+    max: round(n ? values.reduce((a, b) => Math.max(a, b)) : NaN),
     ci95Low: round(mean - half),
     ci95High: round(mean + half),
   };
@@ -491,8 +491,8 @@ async function main() {
           server.pid!,
         );
         scenarioRuns.push(row);
-        pooledUnloaded.push(...unloadedLatencies);
-        pooledLoaded.push(...loadedLatencies);
+        for (const v of unloadedLatencies) pooledUnloaded.push(v);
+        for (const v of loadedLatencies) pooledLoaded.push(v);
 
         console.log(
           `N=${String(n).padStart(3)} #${String(rep).padStart(2)}/${REPEATS} | ` +

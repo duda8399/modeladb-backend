@@ -1,201 +1,3042 @@
 {
   "environment": {
-    "date": "2026-10-03T20:32:15.990Z",
+    "date": "2026-11-15T22:30:44.157Z",
     "node": "v20.19.6",
     "cpu": "13th Gen Intel(R) Core(TM) i5-1345U",
     "cores": 12,
     "memoryGb": 31.04,
+    "repetitions": 10,
     "opsPerScenario": 200,
     "loadSeconds": 5,
     "loadRatePerClient": 10,
-    "serverBaselineRssMb": 198.7
+    "serverBaselineRssMb": 208.81
   },
   "results": [
     {
       "clients": 2,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 12.61,
+          "sd": 3.55,
+          "cvPercent": 28.11,
+          "min": 8.83,
+          "max": 21.84,
+          "ci95Low": 10.08,
+          "ci95High": 15.15
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 15.09,
+          "sd": 6.82,
+          "cvPercent": 45.23,
+          "min": 10.85,
+          "max": 34.18,
+          "ci95Low": 10.2,
+          "ci95High": 19.97
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.5,
+          "sd": 0.17,
+          "cvPercent": 34.01,
+          "min": 0.26,
+          "max": 0.84,
+          "ci95Low": 0.38,
+          "ci95High": 0.62
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.48,
+          "sd": 0.2,
+          "cvPercent": 42.19,
+          "min": 0.1,
+          "max": 0.83,
+          "ci95Low": 0.33,
+          "ci95High": 0.62
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 0.96,
+          "sd": 0.3,
+          "cvPercent": 31.73,
+          "min": 0.59,
+          "max": 1.61,
+          "ci95Low": 0.74,
+          "ci95High": 1.17
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 1.43,
+          "sd": 0.41,
+          "cvPercent": 28.91,
+          "min": 0.85,
+          "max": 2.22,
+          "ci95Low": 1.13,
+          "ci95High": 1.72
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 3.25,
+          "sd": 3.99,
+          "cvPercent": 122.75,
+          "min": 1.17,
+          "max": 14.43,
+          "ci95Low": 0.4,
+          "ci95High": 6.11
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 1.72,
+          "sd": 0.17,
+          "cvPercent": 9.61,
+          "min": 1.49,
+          "max": 1.94,
+          "ci95Low": 1.6,
+          "ci95High": 1.84
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 1.79,
+          "sd": 0.19,
+          "cvPercent": 10.44,
+          "min": 1.54,
+          "max": 2.05,
+          "ci95Low": 1.66,
+          "ci95High": 1.93
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 2.48,
+          "sd": 0.19,
+          "cvPercent": 7.81,
+          "min": 2.19,
+          "max": 2.74,
+          "ci95Low": 2.34,
+          "ci95High": 2.62
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 2.99,
+          "sd": 0.49,
+          "cvPercent": 16.49,
+          "min": 2.43,
+          "max": 3.96,
+          "ci95Low": 2.64,
+          "ci95High": 3.34
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 2.99,
+          "sd": 0.49,
+          "cvPercent": 16.49,
+          "min": 2.43,
+          "max": 3.96,
+          "ci95Low": 2.64,
+          "ci95High": 3.34
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 19.6,
+          "sd": 0,
+          "cvPercent": 0.02,
+          "min": 19.59,
+          "max": 19.6,
+          "ci95Low": 19.6,
+          "ci95High": 19.6
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 19.6,
+          "sd": 0,
+          "cvPercent": 0.02,
+          "min": 19.59,
+          "max": 19.6,
+          "ci95Low": 19.6,
+          "ci95High": 19.6
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 172.74,
+          "sd": 20.64,
+          "cvPercent": 11.95,
+          "min": 161.59,
+          "max": 212.78,
+          "ci95Low": 157.98,
+          "ci95High": 187.51
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 2000,
+          "mean": 0.5,
+          "p50": 0.47,
+          "p95": 1,
+          "p99": 1.61,
+          "max": 14.43
+        },
+        "loaded": {
+          "count": 980,
+          "mean": 1.72,
+          "p50": 1.75,
+          "p95": 2.48,
+          "p99": 2.89,
+          "max": 3.96
+        }
+      }
+    },
+    {
+      "clients": 5,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 21.15,
+          "sd": 3.32,
+          "cvPercent": 15.71,
+          "min": 13.65,
+          "max": 24.47,
+          "ci95Low": 18.77,
+          "ci95High": 23.53
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 23.45,
+          "sd": 3.97,
+          "cvPercent": 16.91,
+          "min": 15.76,
+          "max": 29.97,
+          "ci95Low": 20.62,
+          "ci95High": 26.29
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.32,
+          "sd": 0.11,
+          "cvPercent": 36.27,
+          "min": 0.1,
+          "max": 0.54,
+          "ci95Low": 0.23,
+          "ci95High": 0.4
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.23,
+          "sd": 0.15,
+          "cvPercent": 66.58,
+          "min": 0.06,
+          "max": 0.57,
+          "ci95Low": 0.12,
+          "ci95High": 0.34
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 0.73,
+          "sd": 0.15,
+          "cvPercent": 20.95,
+          "min": 0.42,
+          "max": 1.04,
+          "ci95Low": 0.62,
+          "ci95High": 0.84
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 1.11,
+          "sd": 0.21,
+          "cvPercent": 19.23,
+          "min": 0.63,
+          "max": 1.4,
+          "ci95Low": 0.96,
+          "ci95High": 1.26
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 1.75,
+          "sd": 0.24,
+          "cvPercent": 13.52,
+          "min": 1.19,
+          "max": 2.01,
+          "ci95Low": 1.58,
+          "ci95High": 1.91
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 1.41,
+          "sd": 0.05,
+          "cvPercent": 3.58,
+          "min": 1.35,
+          "max": 1.5,
+          "ci95Low": 1.38,
+          "ci95High": 1.45
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 1.42,
+          "sd": 0.05,
+          "cvPercent": 3.6,
+          "min": 1.37,
+          "max": 1.53,
+          "ci95Low": 1.39,
+          "ci95High": 1.46
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 2.13,
+          "sd": 0.06,
+          "cvPercent": 2.97,
+          "min": 2.03,
+          "max": 2.2,
+          "ci95Low": 2.08,
+          "ci95High": 2.17
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 2.43,
+          "sd": 0.1,
+          "cvPercent": 3.95,
+          "min": 2.26,
+          "max": 2.58,
+          "ci95Low": 2.36,
+          "ci95High": 2.5
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 2.9,
+          "sd": 0.44,
+          "cvPercent": 15.06,
+          "min": 2.41,
+          "max": 3.91,
+          "ci95Low": 2.59,
+          "ci95High": 3.22
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 49,
+          "sd": 0,
+          "cvPercent": 0.01,
+          "min": 48.99,
+          "max": 49.01,
+          "ci95Low": 49,
+          "ci95High": 49
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 196,
+          "sd": 0.02,
+          "cvPercent": 0.01,
+          "min": 195.98,
+          "max": 196.04,
+          "ci95Low": 195.99,
+          "ci95High": 196.01
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 169.95,
+          "sd": 2.63,
+          "cvPercent": 1.55,
+          "min": 165.66,
+          "max": 172.18,
+          "ci95Low": 168.07,
+          "ci95High": 171.83
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 8000,
+          "mean": 0.32,
+          "p50": 0.21,
+          "p95": 0.78,
+          "p99": 1.16,
+          "max": 2.01
+        },
+        "loaded": {
+          "count": 9800,
+          "mean": 1.41,
+          "p50": 1.42,
+          "p95": 2.13,
+          "p99": 2.43,
+          "max": 3.91
+        }
+      }
+    },
+    {
+      "clients": 10,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 23.85,
+          "sd": 6.85,
+          "cvPercent": 28.73,
+          "min": 15.86,
+          "max": 38.24,
+          "ci95Low": 18.95,
+          "ci95High": 28.75
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 28.26,
+          "sd": 6.13,
+          "cvPercent": 21.71,
+          "min": 19.24,
+          "max": 38.65,
+          "ci95Low": 23.87,
+          "ci95High": 32.64
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.3,
+          "sd": 0.08,
+          "cvPercent": 25.58,
+          "min": 0.2,
+          "max": 0.43,
+          "ci95Low": 0.25,
+          "ci95High": 0.35
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.18,
+          "sd": 0.11,
+          "cvPercent": 62.21,
+          "min": 0.09,
+          "max": 0.39,
+          "ci95Low": 0.1,
+          "ci95High": 0.26
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 0.8,
+          "sd": 0.07,
+          "cvPercent": 9.05,
+          "min": 0.71,
+          "max": 0.96,
+          "ci95Low": 0.75,
+          "ci95High": 0.85
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 1.31,
+          "sd": 0.31,
+          "cvPercent": 23.66,
+          "min": 1.02,
+          "max": 2.12,
+          "ci95Low": 1.09,
+          "ci95High": 1.53
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 2.17,
+          "sd": 0.45,
+          "cvPercent": 20.57,
+          "min": 1.48,
+          "max": 2.96,
+          "ci95Low": 1.86,
+          "ci95High": 2.49
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 1.38,
+          "sd": 0.03,
+          "cvPercent": 2,
+          "min": 1.33,
+          "max": 1.42,
+          "ci95Low": 1.36,
+          "ci95High": 1.4
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 1.38,
+          "sd": 0.02,
+          "cvPercent": 1.72,
+          "min": 1.34,
+          "max": 1.41,
+          "ci95Low": 1.36,
+          "ci95High": 1.39
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 2.07,
+          "sd": 0.05,
+          "cvPercent": 2.63,
+          "min": 1.97,
+          "max": 2.14,
+          "ci95Low": 2.03,
+          "ci95High": 2.11
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 2.44,
+          "sd": 0.07,
+          "cvPercent": 2.96,
+          "min": 2.28,
+          "max": 2.54,
+          "ci95Low": 2.39,
+          "ci95High": 2.49
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 3.13,
+          "sd": 0.28,
+          "cvPercent": 9.02,
+          "min": 2.73,
+          "max": 3.55,
+          "ci95Low": 2.92,
+          "ci95High": 3.33
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 97.41,
+          "sd": 0.22,
+          "cvPercent": 0.23,
+          "min": 97.18,
+          "max": 97.8,
+          "ci95Low": 97.25,
+          "ci95High": 97.57
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 876.72,
+          "sd": 1.99,
+          "cvPercent": 0.23,
+          "min": 874.65,
+          "max": 880.21,
+          "ci95Low": 875.3,
+          "ci95High": 878.14
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 182.38,
+          "sd": 4.75,
+          "cvPercent": 2.6,
+          "min": 178.92,
+          "max": 193.95,
+          "ci95Low": 178.98,
+          "ci95High": 185.78
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 18000,
+          "mean": 0.3,
+          "p50": 0.15,
+          "p95": 0.8,
+          "p99": 1.29,
+          "max": 2.96
+        },
+        "loaded": {
+          "count": 43839,
+          "mean": 1.38,
+          "p50": 1.37,
+          "p95": 2.07,
+          "p99": 2.44,
+          "max": 3.55
+        }
+      }
+    },
+    {
+      "clients": 25,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 40.58,
+          "sd": 11.15,
+          "cvPercent": 27.48,
+          "min": 23.49,
+          "max": 58.63,
+          "ci95Low": 32.6,
+          "ci95High": 48.56
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 44.5,
+          "sd": 9.58,
+          "cvPercent": 21.53,
+          "min": 30.89,
+          "max": 62.06,
+          "ci95Low": 37.64,
+          "ci95High": 51.35
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.45,
+          "sd": 0.1,
+          "cvPercent": 22.69,
+          "min": 0.28,
+          "max": 0.61,
+          "ci95Low": 0.38,
+          "ci95High": 0.52
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.36,
+          "sd": 0.17,
+          "cvPercent": 45.89,
+          "min": 0.15,
+          "max": 0.55,
+          "ci95Low": 0.24,
+          "ci95High": 0.48
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 1.08,
+          "sd": 0.12,
+          "cvPercent": 10.92,
+          "min": 0.89,
+          "max": 1.27,
+          "ci95Low": 1,
+          "ci95High": 1.17
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 1.62,
+          "sd": 0.25,
+          "cvPercent": 15.31,
+          "min": 1.26,
+          "max": 1.96,
+          "ci95Low": 1.45,
+          "ci95High": 1.8
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 3,
+          "sd": 0.62,
+          "cvPercent": 20.68,
+          "min": 2.09,
+          "max": 3.96,
+          "ci95Low": 2.56,
+          "ci95High": 3.45
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 1.64,
+          "sd": 0.05,
+          "cvPercent": 2.8,
+          "min": 1.6,
+          "max": 1.76,
+          "ci95Low": 1.61,
+          "ci95High": 1.68
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 1.55,
+          "sd": 0.04,
+          "cvPercent": 2.56,
+          "min": 1.52,
+          "max": 1.65,
+          "ci95Low": 1.52,
+          "ci95High": 1.58
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 2.83,
+          "sd": 0.1,
+          "cvPercent": 3.53,
+          "min": 2.72,
+          "max": 3.04,
+          "ci95Low": 2.76,
+          "ci95High": 2.9
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 3.82,
+          "sd": 0.16,
+          "cvPercent": 4.23,
+          "min": 3.57,
+          "max": 4.13,
+          "ci95Low": 3.7,
+          "ci95High": 3.93
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 6.18,
+          "sd": 0.69,
+          "cvPercent": 11.18,
+          "min": 5.47,
+          "max": 7.03,
+          "ci95Low": 5.68,
+          "ci95High": 6.67
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 244.33,
+          "sd": 0.32,
+          "cvPercent": 0.13,
+          "min": 243.59,
+          "max": 244.65,
+          "ci95Low": 244.1,
+          "ci95High": 244.56
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 5863.91,
+          "sd": 7.77,
+          "cvPercent": 0.13,
+          "min": 5846.08,
+          "max": 5871.69,
+          "ci95Low": 5858.35,
+          "ci95High": 5869.47
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 202.72,
+          "sd": 3.3,
+          "cvPercent": 1.63,
+          "min": 195.8,
+          "max": 206.35,
+          "ci95Low": 200.36,
+          "ci95High": 205.08
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 48000,
+          "mean": 0.45,
+          "p50": 0.39,
+          "p95": 1.08,
+          "p99": 1.65,
+          "max": 3.96
+        },
+        "loaded": {
+          "count": 293184,
+          "mean": 1.64,
+          "p50": 1.55,
+          "p95": 2.84,
+          "p99": 3.82,
+          "max": 7.03
+        }
+      }
+    },
+    {
+      "clients": 50,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 48.69,
+          "sd": 11.43,
+          "cvPercent": 23.48,
+          "min": 35.48,
+          "max": 78.23,
+          "ci95Low": 40.51,
+          "ci95High": 56.87
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 64.01,
+          "sd": 12.64,
+          "cvPercent": 19.75,
+          "min": 49.45,
+          "max": 84.77,
+          "ci95Low": 54.97,
+          "ci95High": 73.05
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.43,
+          "sd": 0.12,
+          "cvPercent": 27.69,
+          "min": 0.28,
+          "max": 0.66,
+          "ci95Low": 0.35,
+          "ci95High": 0.52
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.31,
+          "sd": 0.11,
+          "cvPercent": 36.56,
+          "min": 0.21,
+          "max": 0.57,
+          "ci95Low": 0.23,
+          "ci95High": 0.39
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 1.21,
+          "sd": 0.19,
+          "cvPercent": 15.75,
+          "min": 0.93,
+          "max": 1.5,
+          "ci95Low": 1.07,
+          "ci95High": 1.34
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 2.03,
+          "sd": 0.64,
+          "cvPercent": 31.64,
+          "min": 1.44,
+          "max": 3.53,
+          "ci95Low": 1.57,
+          "ci95High": 2.49
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 3.32,
+          "sd": 1.13,
+          "cvPercent": 34,
+          "min": 2.33,
+          "max": 5.72,
+          "ci95Low": 2.51,
+          "ci95High": 4.13
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 2.01,
+          "sd": 0.44,
+          "cvPercent": 21.78,
+          "min": 1.62,
+          "max": 2.98,
+          "ci95Low": 1.7,
+          "ci95High": 2.32
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 1.68,
+          "sd": 0.4,
+          "cvPercent": 23.94,
+          "min": 1.38,
+          "max": 2.65,
+          "ci95Low": 1.39,
+          "ci95High": 1.97
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 4.47,
+          "sd": 0.93,
+          "cvPercent": 20.81,
+          "min": 3.41,
+          "max": 6.11,
+          "ci95Low": 3.81,
+          "ci95High": 5.14
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 6.26,
+          "sd": 1.16,
+          "cvPercent": 18.48,
+          "min": 4.64,
+          "max": 8.18,
+          "ci95Low": 5.44,
+          "ci95High": 7.09
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 11.48,
+          "sd": 2.82,
+          "cvPercent": 24.58,
+          "min": 6.97,
+          "max": 16.77,
+          "ci95Low": 9.46,
+          "ci95High": 13.5
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 488.8,
+          "sd": 0.85,
+          "cvPercent": 0.17,
+          "min": 487,
+          "max": 489.85,
+          "ci95Low": 488.2,
+          "ci95High": 489.41
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 23951.29,
+          "sd": 41.48,
+          "cvPercent": 0.17,
+          "min": 23862.85,
+          "max": 24002.58,
+          "ci95Low": 23921.62,
+          "ci95High": 23980.96
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 212.18,
+          "sd": 1.63,
+          "cvPercent": 0.77,
+          "min": 209.67,
+          "max": 213.85,
+          "ci95Low": 211.01,
+          "ci95High": 213.34
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 98000,
+          "mean": 0.43,
+          "p50": 0.28,
+          "p95": 1.23,
+          "p99": 1.97,
+          "max": 5.72
+        },
+        "loaded": {
+          "count": 1197560,
+          "mean": 2.01,
+          "p50": 1.62,
+          "p95": 4.77,
+          "p99": 6.69,
+          "max": 16.77
+        }
+      }
+    },
+    {
+      "clients": 100,
+      "repetitions": 10,
+      "metrics": {
+        "join.p50": {
+          "n": 10,
+          "mean": 77.43,
+          "sd": 13.28,
+          "cvPercent": 17.15,
+          "min": 54.42,
+          "max": 93.38,
+          "ci95Low": 67.93,
+          "ci95High": 86.93
+        },
+        "join.p95": {
+          "n": 10,
+          "mean": 113.53,
+          "sd": 15.98,
+          "cvPercent": 14.08,
+          "min": 94.59,
+          "max": 136.36,
+          "ci95Low": 102.1,
+          "ci95High": 124.96
+        },
+        "unloaded.mean": {
+          "n": 10,
+          "mean": 0.58,
+          "sd": 0.09,
+          "cvPercent": 16.01,
+          "min": 0.47,
+          "max": 0.74,
+          "ci95Low": 0.51,
+          "ci95High": 0.65
+        },
+        "unloaded.p50": {
+          "n": 10,
+          "mean": 0.43,
+          "sd": 0.04,
+          "cvPercent": 8.7,
+          "min": 0.4,
+          "max": 0.5,
+          "ci95Low": 0.41,
+          "ci95High": 0.46
+        },
+        "unloaded.p95": {
+          "n": 10,
+          "mean": 1.69,
+          "sd": 0.33,
+          "cvPercent": 19.65,
+          "min": 1.09,
+          "max": 2.1,
+          "ci95Low": 1.45,
+          "ci95High": 1.92
+        },
+        "unloaded.p99": {
+          "n": 10,
+          "mean": 2.98,
+          "sd": 0.55,
+          "cvPercent": 18.51,
+          "min": 2.29,
+          "max": 3.83,
+          "ci95Low": 2.58,
+          "ci95High": 3.37
+        },
+        "unloaded.max": {
+          "n": 10,
+          "mean": 5.36,
+          "sd": 1.33,
+          "cvPercent": 24.79,
+          "min": 3.48,
+          "max": 8.18,
+          "ci95Low": 4.41,
+          "ci95High": 6.31
+        },
+        "loaded.mean": {
+          "n": 10,
+          "mean": 3.85,
+          "sd": 0.61,
+          "cvPercent": 15.84,
+          "min": 2.79,
+          "max": 4.93,
+          "ci95Low": 3.41,
+          "ci95High": 4.28
+        },
+        "loaded.p50": {
+          "n": 10,
+          "mean": 2.97,
+          "sd": 0.49,
+          "cvPercent": 16.52,
+          "min": 2.22,
+          "max": 3.97,
+          "ci95Low": 2.62,
+          "ci95High": 3.32
+        },
+        "loaded.p95": {
+          "n": 10,
+          "mean": 10.41,
+          "sd": 1.72,
+          "cvPercent": 16.54,
+          "min": 7.3,
+          "max": 12.81,
+          "ci95Low": 9.17,
+          "ci95High": 11.64
+        },
+        "loaded.p99": {
+          "n": 10,
+          "mean": 16.29,
+          "sd": 3.02,
+          "cvPercent": 18.53,
+          "min": 11.13,
+          "max": 21.19,
+          "ci95Low": 14.13,
+          "ci95High": 18.44
+        },
+        "loaded.max": {
+          "n": 10,
+          "mean": 30.21,
+          "sd": 5.52,
+          "cvPercent": 18.27,
+          "min": 19.31,
+          "max": 38.61,
+          "ci95Low": 26.26,
+          "ci95High": 34.16
+        },
+        "loaded.opsPerSecondSent": {
+          "n": 10,
+          "mean": 975.27,
+          "sd": 1.88,
+          "cvPercent": 0.19,
+          "min": 971.28,
+          "max": 977.73,
+          "ci95Low": 973.92,
+          "ci95High": 976.61
+        },
+        "loaded.deliveriesPerSecond": {
+          "n": 10,
+          "mean": 96551.37,
+          "sd": 185.87,
+          "cvPercent": 0.19,
+          "min": 96156.33,
+          "max": 96794.88,
+          "ci95Low": 96418.41,
+          "ci95High": 96684.32
+        },
+        "loaded.lossRate": {
+          "n": 10,
+          "mean": 0,
+          "sd": 0,
+          "cvPercent": 0,
+          "min": 0,
+          "max": 0,
+          "ci95Low": 0,
+          "ci95High": 0
+        },
+        "serverRssMb": {
+          "n": 10,
+          "mean": 221.54,
+          "sd": 2.59,
+          "cvPercent": 1.17,
+          "min": 215.91,
+          "max": 225.05,
+          "ci95Low": 219.68,
+          "ci95High": 223.39
+        }
+      },
+      "pooled": {
+        "unloaded": {
+          "count": 198000,
+          "mean": 0.58,
+          "p50": 0.43,
+          "p95": 1.76,
+          "p99": 3.03,
+          "max": 8.18
+        },
+        "loaded": {
+          "count": 4827735,
+          "mean": 3.84,
+          "p50": 2.92,
+          "p95": 10.53,
+          "p99": 16.77,
+          "max": 38.61
+        }
+      }
+    }
+  ],
+  "runs": [
+    {
+      "clients": 2,
+      "repetition": 1,
       "join": {
         "count": 2,
-        "mean": 22.58,
-        "p50": 19.7,
-        "p95": 25.46,
-        "p99": 25.46,
-        "max": 25.46
+        "mean": 28.01,
+        "p50": 21.84,
+        "p95": 34.18,
+        "p99": 34.18,
+        "max": 34.18
       },
       "unloaded": {
         "count": 200,
-        "mean": 0.44,
-        "p50": 0.38,
-        "p95": 0.8,
-        "p99": 1.74,
-        "max": 3.76
+        "mean": 0.64,
+        "p50": 0.63,
+        "p95": 1.31,
+        "p99": 1.92,
+        "max": 3.53
       },
       "loaded": {
         "count": 98,
-        "mean": 1.27,
-        "p50": 1.13,
-        "p95": 2.48,
-        "p99": 3.73,
-        "max": 3.73,
+        "mean": 1.87,
+        "p50": 1.98,
+        "p95": 2.59,
+        "p99": 3.09,
+        "max": 3.09,
         "opsPerSecondSent": 19.6,
         "deliveriesPerSecond": 19.6,
         "lossRate": 0
       },
-      "serverRssMb": 155.7
+      "serverRssMb": 210.97
     },
     {
-      "clients": 5,
+      "clients": 2,
+      "repetition": 2,
       "join": {
-        "count": 5,
-        "mean": 30.41,
-        "p50": 29.94,
-        "p95": 32.41,
-        "p99": 32.41,
-        "max": 32.41
+        "count": 2,
+        "mean": 14.26,
+        "p50": 13.64,
+        "p95": 14.89,
+        "p99": 14.89,
+        "max": 14.89
       },
       "unloaded": {
-        "count": 800,
-        "mean": 0.62,
-        "p50": 0.54,
-        "p95": 1.29,
-        "p99": 1.55,
+        "count": 200,
+        "mean": 0.52,
+        "p50": 0.46,
+        "p95": 1.05,
+        "p99": 1.62,
+        "max": 2.77
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.88,
+        "p50": 1.99,
+        "p95": 2.61,
+        "p99": 3.04,
+        "max": 3.04,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 212.78
+    },
+    {
+      "clients": 2,
+      "repetition": 3,
+      "join": {
+        "count": 2,
+        "mean": 13.03,
+        "p50": 11.49,
+        "p95": 14.57,
+        "p99": 14.57,
+        "max": 14.57
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.84,
+        "p50": 0.83,
+        "p95": 1.61,
+        "p99": 2.22,
+        "max": 14.43
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.94,
+        "p50": 2.05,
+        "p95": 2.74,
+        "p99": 3.96,
+        "max": 3.96,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 161.59
+    },
+    {
+      "clients": 2,
+      "repetition": 4,
+      "join": {
+        "count": 2,
+        "mean": 9.84,
+        "p50": 8.83,
+        "p95": 10.85,
+        "p99": 10.85,
+        "max": 10.85
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.56,
+        "p50": 0.62,
+        "p95": 0.96,
+        "p99": 1.53,
         "max": 2.27
       },
       "loaded": {
+        "count": 98,
+        "mean": 1.86,
+        "p50": 1.85,
+        "p95": 2.69,
+        "p99": 3.58,
+        "max": 3.58,
+        "opsPerSecondSent": 19.59,
+        "deliveriesPerSecond": 19.59,
+        "lossRate": 0
+      },
+      "serverRssMb": 162.51
+    },
+    {
+      "clients": 2,
+      "repetition": 5,
+      "join": {
+        "count": 2,
+        "mean": 12.74,
+        "p50": 12.57,
+        "p95": 12.9,
+        "p99": 12.9,
+        "max": 12.9
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.6,
+        "p50": 0.61,
+        "p95": 0.94,
+        "p99": 1.44,
+        "max": 1.98
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.79,
+        "p50": 1.86,
+        "p95": 2.44,
+        "p99": 3.11,
+        "max": 3.11,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 162.58
+    },
+    {
+      "clients": 2,
+      "repetition": 6,
+      "join": {
+        "count": 2,
+        "mean": 12.41,
+        "p50": 11.49,
+        "p95": 13.33,
+        "p99": 13.33,
+        "max": 13.33
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.38,
+        "p50": 0.42,
+        "p95": 0.8,
+        "p99": 1.18,
+        "max": 2.05
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.7,
+        "p50": 1.79,
+        "p95": 2.59,
+        "p99": 2.97,
+        "max": 2.97,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 162.88
+    },
+    {
+      "clients": 2,
+      "repetition": 7,
+      "join": {
+        "count": 2,
+        "mean": 13.62,
+        "p50": 13.56,
+        "p95": 13.68,
+        "p99": 13.68,
+        "max": 13.68
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.35,
+        "p50": 0.34,
+        "p95": 0.73,
+        "p99": 1.15,
+        "max": 1.53
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.6,
+        "p50": 1.71,
+        "p95": 2.36,
+        "p99": 2.48,
+        "max": 2.48,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 163.7
+    },
+    {
+      "clients": 2,
+      "repetition": 8,
+      "join": {
+        "count": 2,
+        "mean": 11.51,
+        "p50": 11.36,
+        "p95": 11.65,
+        "p99": 11.65,
+        "max": 11.65
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.42,
+        "p50": 0.42,
+        "p95": 0.83,
+        "p99": 1.22,
+        "max": 1.56
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.54,
+        "p50": 1.55,
+        "p95": 2.19,
+        "p99": 2.51,
+        "max": 2.51,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 163.45
+    },
+    {
+      "clients": 2,
+      "repetition": 9,
+      "join": {
+        "count": 2,
+        "mean": 11.5,
+        "p50": 10.95,
+        "p95": 12.05,
+        "p99": 12.05,
+        "max": 12.05
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.26,
+        "p50": 0.1,
+        "p95": 0.59,
+        "p99": 0.85,
+        "max": 1.17
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.56,
+        "p50": 1.6,
+        "p95": 2.4,
+        "p99": 2.73,
+        "max": 2.73,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 163.35
+    },
+    {
+      "clients": 2,
+      "repetition": 10,
+      "join": {
+        "count": 2,
+        "mean": 11.58,
+        "p50": 10.4,
+        "p95": 12.76,
+        "p99": 12.76,
+        "max": 12.76
+      },
+      "unloaded": {
+        "count": 200,
+        "mean": 0.41,
+        "p50": 0.36,
+        "p95": 0.75,
+        "p99": 1.12,
+        "max": 1.24
+      },
+      "loaded": {
+        "count": 98,
+        "mean": 1.49,
+        "p50": 1.54,
+        "p95": 2.2,
+        "p99": 2.43,
+        "max": 2.43,
+        "opsPerSecondSent": 19.6,
+        "deliveriesPerSecond": 19.6,
+        "lossRate": 0
+      },
+      "serverRssMb": 163.64
+    },
+    {
+      "clients": 5,
+      "repetition": 1,
+      "join": {
+        "count": 5,
+        "mean": 24.42,
+        "p50": 24.23,
+        "p95": 25.44,
+        "p99": 25.44,
+        "max": 25.44
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.54,
+        "p50": 0.57,
+        "p95": 1.04,
+        "p99": 1.4,
+        "max": 1.64
+      },
+      "loaded": {
         "count": 980,
-        "mean": 1.81,
-        "p50": 1.82,
-        "p95": 2.66,
-        "p99": 3.73,
-        "max": 7.19,
+        "mean": 1.5,
+        "p50": 1.53,
+        "p95": 2.17,
+        "p99": 2.42,
+        "max": 2.7,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196,
+        "lossRate": 0
+      },
+      "serverRssMb": 165.66
+    },
+    {
+      "clients": 5,
+      "repetition": 2,
+      "join": {
+        "count": 5,
+        "mean": 25.17,
+        "p50": 24.47,
+        "p95": 29.97,
+        "p99": 29.97,
+        "max": 29.97
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.39,
+        "p50": 0.35,
+        "p95": 0.82,
+        "p99": 1.03,
+        "max": 1.19
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.46,
+        "p50": 1.44,
+        "p95": 2.2,
+        "p99": 2.51,
+        "max": 2.71,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196,
+        "lossRate": 0
+      },
+      "serverRssMb": 167.02
+    },
+    {
+      "clients": 5,
+      "repetition": 3,
+      "join": {
+        "count": 5,
+        "mean": 14.04,
+        "p50": 13.65,
+        "p95": 15.76,
+        "p99": 15.76,
+        "max": 15.76
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.35,
+        "p50": 0.25,
+        "p95": 0.76,
+        "p99": 1.08,
+        "max": 2.01
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.47,
+        "p50": 1.48,
+        "p95": 2.18,
+        "p99": 2.46,
+        "max": 2.63,
+        "opsPerSecondSent": 48.99,
+        "deliveriesPerSecond": 195.98,
+        "lossRate": 0
+      },
+      "serverRssMb": 167.45
+    },
+    {
+      "clients": 5,
+      "repetition": 4,
+      "join": {
+        "count": 5,
+        "mean": 20.22,
+        "p50": 20.66,
+        "p95": 26.32,
+        "p99": 26.32,
+        "max": 26.32
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.23,
+        "p50": 0.11,
+        "p95": 0.69,
+        "p99": 1.09,
+        "max": 1.78
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.42,
+        "p50": 1.43,
+        "p95": 2.14,
+        "p99": 2.48,
+        "max": 2.84,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 195.98,
+        "lossRate": 0
+      },
+      "serverRssMb": 167.79
+    },
+    {
+      "clients": 5,
+      "repetition": 5,
+      "join": {
+        "count": 5,
+        "mean": 23.35,
+        "p50": 23.1,
+        "p95": 25.91,
+        "p99": 25.91,
+        "max": 25.91
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.37,
+        "p50": 0.32,
+        "p95": 0.67,
+        "p99": 1.13,
+        "max": 1.65
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.35,
+        "p50": 1.38,
+        "p95": 2.03,
+        "p99": 2.33,
+        "max": 2.58,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196.01,
+        "lossRate": 0
+      },
+      "serverRssMb": 171.12
+    },
+    {
+      "clients": 5,
+      "repetition": 6,
+      "join": {
+        "count": 5,
+        "mean": 22.3,
+        "p50": 22.57,
+        "p95": 22.95,
+        "p99": 22.95,
+        "max": 22.95
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.26,
+        "p50": 0.11,
+        "p95": 0.68,
+        "p99": 1.06,
+        "max": 1.81
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.36,
+        "p50": 1.37,
+        "p95": 2.08,
+        "p99": 2.5,
+        "max": 3.31,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196.02,
+        "lossRate": 0
+      },
+      "serverRssMb": 172
+    },
+    {
+      "clients": 5,
+      "repetition": 7,
+      "join": {
+        "count": 5,
+        "mean": 15.91,
+        "p50": 18.07,
+        "p95": 19.24,
+        "p99": 19.24,
+        "max": 19.24
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.32,
+        "p50": 0.16,
+        "p95": 0.76,
+        "p99": 1.39,
+        "max": 1.99
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.37,
+        "p50": 1.38,
+        "p95": 2.03,
+        "p99": 2.26,
+        "max": 2.41,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196,
+        "lossRate": 0
+      },
+      "serverRssMb": 172
+    },
+    {
+      "clients": 5,
+      "repetition": 8,
+      "join": {
+        "count": 5,
+        "mean": 22.36,
+        "p50": 23.46,
+        "p95": 24.31,
+        "p99": 24.31,
+        "max": 24.31
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.32,
+        "p50": 0.27,
+        "p95": 0.72,
+        "p99": 1.1,
+        "max": 1.66
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.4,
+        "p50": 1.44,
+        "p95": 2.15,
+        "p99": 2.41,
+        "max": 3.09,
         "opsPerSecondSent": 49,
         "deliveriesPerSecond": 195.99,
         "lossRate": 0
       },
-      "serverRssMb": 159.28
+      "serverRssMb": 172.11
+    },
+    {
+      "clients": 5,
+      "repetition": 9,
+      "join": {
+        "count": 5,
+        "mean": 20.11,
+        "p50": 21.42,
+        "p95": 22.77,
+        "p99": 22.77,
+        "max": 22.77
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.1,
+        "p50": 0.06,
+        "p95": 0.42,
+        "p99": 0.63,
+        "max": 1.9
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.41,
+        "p50": 1.42,
+        "p95": 2.19,
+        "p99": 2.58,
+        "max": 3.91,
+        "opsPerSecondSent": 49,
+        "deliveriesPerSecond": 196,
+        "lossRate": 0
+      },
+      "serverRssMb": 172.14
+    },
+    {
+      "clients": 5,
+      "repetition": 10,
+      "join": {
+        "count": 5,
+        "mean": 18.71,
+        "p50": 19.87,
+        "p95": 21.87,
+        "p99": 21.87,
+        "max": 21.87
+      },
+      "unloaded": {
+        "count": 800,
+        "mean": 0.28,
+        "p50": 0.12,
+        "p95": 0.73,
+        "p99": 1.19,
+        "max": 1.82
+      },
+      "loaded": {
+        "count": 980,
+        "mean": 1.38,
+        "p50": 1.38,
+        "p95": 2.11,
+        "p99": 2.35,
+        "max": 2.86,
+        "opsPerSecondSent": 49.01,
+        "deliveriesPerSecond": 196.04,
+        "lossRate": 0
+      },
+      "serverRssMb": 172.18
     },
     {
       "clients": 10,
+      "repetition": 1,
       "join": {
         "count": 10,
-        "mean": 15.02,
-        "p50": 14.4,
-        "p95": 18.11,
-        "p99": 18.11,
-        "max": 18.11
+        "mean": 38.21,
+        "p50": 38.24,
+        "p95": 38.65,
+        "p99": 38.65,
+        "max": 38.65
       },
       "unloaded": {
         "count": 1800,
-        "mean": 0.48,
-        "p50": 0.4,
-        "p95": 1.08,
-        "p99": 1.53,
-        "max": 2.24
+        "mean": 0.23,
+        "p50": 0.09,
+        "p95": 0.77,
+        "p99": 1.41,
+        "max": 2.18
+      },
+      "loaded": {
+        "count": 4383,
+        "mean": 1.37,
+        "p50": 1.36,
+        "p95": 2.06,
+        "p99": 2.47,
+        "max": 2.98,
+        "opsPerSecondSent": 97.39,
+        "deliveriesPerSecond": 876.54,
+        "lossRate": 0
+      },
+      "serverRssMb": 178.92
+    },
+    {
+      "clients": 10,
+      "repetition": 2,
+      "join": {
+        "count": 10,
+        "mean": 21.57,
+        "p50": 21.23,
+        "p95": 25.36,
+        "p99": 25.36,
+        "max": 25.36
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.25,
+        "p50": 0.1,
+        "p95": 0.79,
+        "p99": 1.18,
+        "max": 2.06
+      },
+      "loaded": {
+        "count": 4374,
+        "mean": 1.38,
+        "p50": 1.37,
+        "p95": 2.08,
+        "p99": 2.42,
+        "max": 3.42,
+        "opsPerSecondSent": 97.19,
+        "deliveriesPerSecond": 874.68,
+        "lossRate": 0
+      },
+      "serverRssMb": 179.07
+    },
+    {
+      "clients": 10,
+      "repetition": 3,
+      "join": {
+        "count": 10,
+        "mean": 16.16,
+        "p50": 15.86,
+        "p95": 19.24,
+        "p99": 19.24,
+        "max": 19.24
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.43,
+        "p50": 0.36,
+        "p95": 0.96,
+        "p99": 2.12,
+        "max": 2.96
+      },
+      "loaded": {
+        "count": 4374,
+        "mean": 1.38,
+        "p50": 1.37,
+        "p95": 2.07,
+        "p99": 2.47,
+        "max": 3.33,
+        "opsPerSecondSent": 97.2,
+        "deliveriesPerSecond": 874.76,
+        "lossRate": 0
+      },
+      "serverRssMb": 179.83
+    },
+    {
+      "clients": 10,
+      "repetition": 4,
+      "join": {
+        "count": 10,
+        "mean": 26.39,
+        "p50": 24.67,
+        "p95": 33.73,
+        "p99": 33.73,
+        "max": 33.73
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.36,
+        "p50": 0.21,
+        "p95": 0.84,
+        "p99": 1.2,
+        "max": 2.63
+      },
+      "loaded": {
+        "count": 4383,
+        "mean": 1.38,
+        "p50": 1.36,
+        "p95": 2.12,
+        "p99": 2.49,
+        "max": 3.19,
+        "opsPerSecondSent": 97.42,
+        "deliveriesPerSecond": 876.82,
+        "lossRate": 0
+      },
+      "serverRssMb": 180.61
+    },
+    {
+      "clients": 10,
+      "repetition": 5,
+      "join": {
+        "count": 10,
+        "mean": 22.22,
+        "p50": 21.27,
+        "p95": 27.15,
+        "p99": 27.15,
+        "max": 27.15
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.4,
+        "p50": 0.39,
+        "p95": 0.82,
+        "p99": 1.24,
+        "max": 2.59
+      },
+      "loaded": {
+        "count": 4374,
+        "mean": 1.33,
+        "p50": 1.34,
+        "p95": 1.97,
+        "p99": 2.28,
+        "max": 2.73,
+        "opsPerSecondSent": 97.18,
+        "deliveriesPerSecond": 874.65,
+        "lossRate": 0
+      },
+      "serverRssMb": 180.71
+    },
+    {
+      "clients": 10,
+      "repetition": 6,
+      "join": {
+        "count": 10,
+        "mean": 15.78,
+        "p50": 16.21,
+        "p95": 19.49,
+        "p99": 19.49,
+        "max": 19.49
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.23,
+        "p50": 0.11,
+        "p95": 0.74,
+        "p99": 1.02,
+        "max": 1.91
+      },
+      "loaded": {
+        "count": 4383,
+        "mean": 1.35,
+        "p50": 1.36,
+        "p95": 2.01,
+        "p99": 2.43,
+        "max": 3.35,
+        "opsPerSecondSent": 97.39,
+        "deliveriesPerSecond": 876.52,
+        "lossRate": 0
+      },
+      "serverRssMb": 180.8
+    },
+    {
+      "clients": 10,
+      "repetition": 7,
+      "join": {
+        "count": 10,
+        "mean": 17.99,
+        "p50": 18.1,
+        "p95": 25.54,
+        "p99": 25.54,
+        "max": 25.54
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.2,
+        "p50": 0.1,
+        "p95": 0.71,
+        "p99": 1.31,
+        "max": 2.18
+      },
+      "loaded": {
+        "count": 4383,
+        "mean": 1.38,
+        "p50": 1.37,
+        "p95": 2.09,
+        "p99": 2.43,
+        "max": 2.79,
+        "opsPerSecondSent": 97.39,
+        "deliveriesPerSecond": 876.52,
+        "lossRate": 0
+      },
+      "serverRssMb": 181.1
+    },
+    {
+      "clients": 10,
+      "repetition": 8,
+      "join": {
+        "count": 10,
+        "mean": 24.81,
+        "p50": 26.4,
+        "p95": 31.44,
+        "p99": 31.44,
+        "max": 31.44
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.29,
+        "p50": 0.12,
+        "p95": 0.77,
+        "p99": 1.29,
+        "max": 1.7
       },
       "loaded": {
         "count": 4401,
-        "mean": 1.58,
-        "p50": 1.63,
-        "p95": 2.33,
-        "p99": 2.58,
-        "max": 2.98,
+        "mean": 1.41,
+        "p50": 1.41,
+        "p95": 2.14,
+        "p99": 2.54,
+        "max": 3.55,
         "opsPerSecondSent": 97.78,
-        "deliveriesPerSecond": 880,
+        "deliveriesPerSecond": 880.03,
         "lossRate": 0
       },
-      "serverRssMb": 164.28
+      "serverRssMb": 181.11
+    },
+    {
+      "clients": 10,
+      "repetition": 9,
+      "join": {
+        "count": 10,
+        "mean": 28.81,
+        "p50": 28.83,
+        "p95": 30.47,
+        "p99": 30.47,
+        "max": 30.47
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.3,
+        "p50": 0.12,
+        "p95": 0.86,
+        "p99": 1.29,
+        "max": 2.06
+      },
+      "loaded": {
+        "count": 4401,
+        "mean": 1.42,
+        "p50": 1.4,
+        "p95": 2.14,
+        "p99": 2.48,
+        "max": 3,
+        "opsPerSecondSent": 97.8,
+        "deliveriesPerSecond": 880.21,
+        "lossRate": 0
+      },
+      "serverRssMb": 187.68
+    },
+    {
+      "clients": 10,
+      "repetition": 10,
+      "join": {
+        "count": 10,
+        "mean": 25.3,
+        "p50": 27.67,
+        "p95": 31.49,
+        "p99": 31.49,
+        "max": 31.49
+      },
+      "unloaded": {
+        "count": 1800,
+        "mean": 0.31,
+        "p50": 0.18,
+        "p95": 0.75,
+        "p99": 1.03,
+        "max": 1.48
+      },
+      "loaded": {
+        "count": 4383,
+        "mean": 1.41,
+        "p50": 1.41,
+        "p95": 2.05,
+        "p99": 2.37,
+        "max": 2.91,
+        "opsPerSecondSent": 97.38,
+        "deliveriesPerSecond": 876.46,
+        "lossRate": 0
+      },
+      "serverRssMb": 193.95
     },
     {
       "clients": 25,
+      "repetition": 1,
       "join": {
         "count": 25,
-        "mean": 63.39,
-        "p50": 61.61,
-        "p95": 73.25,
-        "p99": 75.32,
-        "max": 75.32
+        "mean": 57.4,
+        "p50": 57.47,
+        "p95": 57.98,
+        "p99": 57.98,
+        "max": 57.98
       },
       "unloaded": {
         "count": 4800,
-        "mean": 0.4,
-        "p50": 0.38,
-        "p95": 0.76,
-        "p99": 1.08,
-        "max": 2
+        "mean": 0.5,
+        "p50": 0.45,
+        "p95": 1.1,
+        "p99": 1.56,
+        "max": 2.09
+      },
+      "loaded": {
+        "count": 29328,
+        "mean": 1.64,
+        "p50": 1.53,
+        "p95": 2.9,
+        "p99": 3.86,
+        "max": 5.47,
+        "opsPerSecondSent": 244.39,
+        "deliveriesPerSecond": 5865.38,
+        "lossRate": 0
+      },
+      "serverRssMb": 195.8
+    },
+    {
+      "clients": 25,
+      "repetition": 2,
+      "join": {
+        "count": 25,
+        "mean": 36.2,
+        "p50": 36.13,
+        "p95": 38.51,
+        "p99": 38.92,
+        "max": 38.92
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.37,
+        "p50": 0.28,
+        "p95": 0.89,
+        "p99": 1.26,
+        "max": 2.56
       },
       "loaded": {
         "count": 29352,
-        "mean": 1.86,
-        "p50": 1.7,
-        "p95": 3.41,
-        "p99": 4.58,
-        "max": 11.64,
-        "opsPerSecondSent": 244.59,
-        "deliveriesPerSecond": 5870.26,
+        "mean": 1.63,
+        "p50": 1.54,
+        "p95": 2.76,
+        "p99": 3.66,
+        "max": 6.64,
+        "opsPerSecondSent": 244.6,
+        "deliveriesPerSecond": 5870.3,
         "lossRate": 0
       },
-      "serverRssMb": 167.47
+      "serverRssMb": 199.25
+    },
+    {
+      "clients": 25,
+      "repetition": 3,
+      "join": {
+        "count": 25,
+        "mean": 34.03,
+        "p50": 36.44,
+        "p95": 46.78,
+        "p99": 47.1,
+        "max": 47.1
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.34,
+        "p50": 0.15,
+        "p95": 0.96,
+        "p99": 1.36,
+        "max": 2.49
+      },
+      "loaded": {
+        "count": 29232,
+        "mean": 1.63,
+        "p50": 1.54,
+        "p95": 2.84,
+        "p99": 3.91,
+        "max": 5.76,
+        "opsPerSecondSent": 243.59,
+        "deliveriesPerSecond": 5846.08,
+        "lossRate": 0
+      },
+      "serverRssMb": 200.69
+    },
+    {
+      "clients": 25,
+      "repetition": 4,
+      "join": {
+        "count": 25,
+        "mean": 27.02,
+        "p50": 23.49,
+        "p95": 35.96,
+        "p99": 37.28,
+        "max": 37.28
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.52,
+        "p50": 0.52,
+        "p95": 1,
+        "p99": 1.33,
+        "max": 3.12
+      },
+      "loaded": {
+        "count": 29328,
+        "mean": 1.63,
+        "p50": 1.53,
+        "p95": 2.82,
+        "p99": 3.82,
+        "max": 5.51,
+        "opsPerSecondSent": 244.4,
+        "deliveriesPerSecond": 5865.65,
+        "lossRate": 0
+      },
+      "serverRssMb": 202.16
+    },
+    {
+      "clients": 25,
+      "repetition": 5,
+      "join": {
+        "count": 25,
+        "mean": 42.86,
+        "p50": 43.78,
+        "p95": 44.61,
+        "p99": 46.44,
+        "max": 46.44
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.44,
+        "p50": 0.33,
+        "p95": 1.24,
+        "p99": 1.9,
+        "max": 3.78
+      },
+      "loaded": {
+        "count": 29328,
+        "mean": 1.6,
+        "p50": 1.52,
+        "p95": 2.72,
+        "p99": 3.57,
+        "max": 5.47,
+        "opsPerSecondSent": 244.42,
+        "deliveriesPerSecond": 5866.01,
+        "lossRate": 0
+      },
+      "serverRssMb": 203.13
+    },
+    {
+      "clients": 25,
+      "repetition": 6,
+      "join": {
+        "count": 25,
+        "mean": 33.9,
+        "p50": 33.59,
+        "p95": 38.5,
+        "p99": 40.14,
+        "max": 40.14
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.28,
+        "p50": 0.15,
+        "p95": 1.09,
+        "p99": 1.62,
+        "max": 3.96
+      },
+      "loaded": {
+        "count": 29304,
+        "mean": 1.68,
+        "p50": 1.58,
+        "p95": 2.88,
+        "p99": 3.82,
+        "max": 5.5,
+        "opsPerSecondSent": 244.22,
+        "deliveriesPerSecond": 5861.35,
+        "lossRate": 0
+      },
+      "serverRssMb": 204.48
+    },
+    {
+      "clients": 25,
+      "repetition": 7,
+      "join": {
+        "count": 25,
+        "mean": 30.22,
+        "p50": 30.19,
+        "p95": 30.89,
+        "p99": 31.05,
+        "max": 31.05
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.5,
+        "p50": 0.45,
+        "p95": 1.08,
+        "p99": 1.71,
+        "max": 3.18
+      },
+      "loaded": {
+        "count": 29280,
+        "mean": 1.64,
+        "p50": 1.53,
+        "p95": 2.88,
+        "p99": 3.93,
+        "max": 6.89,
+        "opsPerSecondSent": 244.01,
+        "deliveriesPerSecond": 5856.21,
+        "lossRate": 0
+      },
+      "serverRssMb": 204.96
+    },
+    {
+      "clients": 25,
+      "repetition": 8,
+      "join": {
+        "count": 25,
+        "mean": 43.15,
+        "p50": 43.01,
+        "p95": 44.25,
+        "p99": 44.27,
+        "max": 44.27
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.53,
+        "p50": 0.55,
+        "p95": 1.15,
+        "p99": 1.96,
+        "max": 3.43
+      },
+      "loaded": {
+        "count": 29352,
+        "mean": 1.61,
+        "p50": 1.52,
+        "p95": 2.75,
+        "p99": 3.81,
+        "max": 6.52,
+        "opsPerSecondSent": 244.61,
+        "deliveriesPerSecond": 5870.62,
+        "lossRate": 0
+      },
+      "serverRssMb": 205.14
+    },
+    {
+      "clients": 25,
+      "repetition": 9,
+      "join": {
+        "count": 25,
+        "mean": 43.01,
+        "p50": 43.09,
+        "p95": 45.41,
+        "p99": 46.03,
+        "max": 46.03
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.39,
+        "p50": 0.17,
+        "p95": 1.04,
+        "p99": 1.66,
+        "max": 2.35
+      },
+      "loaded": {
+        "count": 29352,
+        "mean": 1.62,
+        "p50": 1.54,
+        "p95": 2.72,
+        "p99": 3.65,
+        "max": 7.03,
+        "opsPerSecondSent": 244.65,
+        "deliveriesPerSecond": 5871.69,
+        "lossRate": 0
+      },
+      "serverRssMb": 205.23
+    },
+    {
+      "clients": 25,
+      "repetition": 10,
+      "join": {
+        "count": 25,
+        "mean": 58.21,
+        "p50": 58.63,
+        "p95": 62.06,
+        "p99": 64.12,
+        "max": 64.12
+      },
+      "unloaded": {
+        "count": 4800,
+        "mean": 0.61,
+        "p50": 0.55,
+        "p95": 1.27,
+        "p99": 1.88,
+        "max": 3.07
+      },
+      "loaded": {
+        "count": 29328,
+        "mean": 1.76,
+        "p50": 1.65,
+        "p95": 3.04,
+        "p99": 4.13,
+        "max": 6.98,
+        "opsPerSecondSent": 244.41,
+        "deliveriesPerSecond": 5865.82,
+        "lossRate": 0
+      },
+      "serverRssMb": 206.35
     },
     {
       "clients": 50,
+      "repetition": 1,
       "join": {
         "count": 50,
-        "mean": 121.42,
-        "p50": 121.75,
-        "p95": 124.85,
-        "p99": 131.1,
-        "max": 131.1
+        "mean": 77.33,
+        "p50": 78.23,
+        "p95": 84.77,
+        "p99": 89.04,
+        "max": 89.04
       },
       "unloaded": {
         "count": 9800,
-        "mean": 0.58,
-        "p50": 0.46,
-        "p95": 1.35,
-        "p99": 2.52,
-        "max": 4.14
+        "mean": 0.49,
+        "p50": 0.35,
+        "p95": 1.34,
+        "p99": 2.38,
+        "max": 3.61
+      },
+      "loaded": {
+        "count": 119707,
+        "mean": 1.92,
+        "p50": 1.49,
+        "p95": 4.71,
+        "p99": 6.96,
+        "max": 12.73,
+        "opsPerSecondSent": 488.59,
+        "deliveriesPerSecond": 23941.09,
+        "lossRate": 0
+      },
+      "serverRssMb": 209.67
+    },
+    {
+      "clients": 50,
+      "repetition": 2,
+      "join": {
+        "count": 50,
+        "mean": 51.54,
+        "p50": 47.4,
+        "p95": 73.09,
+        "p99": 74.66,
+        "max": 74.66
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.28,
+        "p50": 0.21,
+        "p95": 0.93,
+        "p99": 1.44,
+        "max": 2.78
       },
       "loaded": {
         "count": 119854,
-        "mean": 1.82,
-        "p50": 1.47,
-        "p95": 4.33,
-        "p99": 6.62,
-        "max": 13.02,
-        "opsPerSecondSent": 489.13,
-        "deliveriesPerSecond": 23967.32,
+        "mean": 1.75,
+        "p50": 1.45,
+        "p95": 3.86,
+        "p99": 5.64,
+        "max": 10.43,
+        "opsPerSecondSent": 489.24,
+        "deliveriesPerSecond": 23972.54,
         "lossRate": 0
       },
-      "serverRssMb": 177.9
+      "serverRssMb": 209.78
+    },
+    {
+      "clients": 50,
+      "repetition": 3,
+      "join": {
+        "count": 50,
+        "mean": 49.52,
+        "p50": 50.37,
+        "p95": 52.17,
+        "p99": 52.39,
+        "max": 52.39
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.55,
+        "p50": 0.43,
+        "p95": 1.34,
+        "p99": 1.7,
+        "max": 2.33
+      },
+      "loaded": {
+        "count": 119560,
+        "mean": 2.98,
+        "p50": 2.65,
+        "p95": 6.11,
+        "p99": 7.89,
+        "max": 14.6,
+        "opsPerSecondSent": 487.97,
+        "deliveriesPerSecond": 23910.39,
+        "lossRate": 0
+      },
+      "serverRssMb": 212.2
+    },
+    {
+      "clients": 50,
+      "repetition": 4,
+      "join": {
+        "count": 50,
+        "mean": 49.9,
+        "p50": 49.78,
+        "p95": 55.26,
+        "p99": 55.34,
+        "max": 55.34
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.44,
+        "p50": 0.27,
+        "p95": 1.23,
+        "p99": 2.29,
+        "max": 4.93
+      },
+      "loaded": {
+        "count": 119854,
+        "mean": 1.62,
+        "p50": 1.39,
+        "p95": 3.41,
+        "p99": 4.64,
+        "max": 6.97,
+        "opsPerSecondSent": 489.1,
+        "deliveriesPerSecond": 23965.72,
+        "lossRate": 0
+      },
+      "serverRssMb": 211.57
+    },
+    {
+      "clients": 50,
+      "repetition": 5,
+      "join": {
+        "count": 50,
+        "mean": 39.97,
+        "p50": 35.48,
+        "p95": 55.77,
+        "p99": 57.26,
+        "max": 57.26
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.3,
+        "p50": 0.22,
+        "p95": 1.02,
+        "p99": 1.45,
+        "max": 2.61
+      },
+      "loaded": {
+        "count": 120001,
+        "mean": 1.76,
+        "p50": 1.38,
+        "p95": 4.39,
+        "p99": 6.46,
+        "max": 11.4,
+        "opsPerSecondSent": 489.85,
+        "deliveriesPerSecond": 24002.58,
+        "lossRate": 0
+      },
+      "serverRssMb": 211.57
+    },
+    {
+      "clients": 50,
+      "repetition": 6,
+      "join": {
+        "count": 50,
+        "mean": 41.59,
+        "p50": 40.58,
+        "p95": 50.74,
+        "p99": 52.4,
+        "max": 52.4
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.4,
+        "p50": 0.26,
+        "p95": 1.08,
+        "p99": 3.53,
+        "max": 5.72
+      },
+      "loaded": {
+        "count": 119658,
+        "mean": 1.97,
+        "p50": 1.67,
+        "p95": 4.3,
+        "p99": 6.5,
+        "max": 11.97,
+        "opsPerSecondSent": 488.42,
+        "deliveriesPerSecond": 23932.42,
+        "lossRate": 0
+      },
+      "serverRssMb": 211.68
+    },
+    {
+      "clients": 50,
+      "repetition": 7,
+      "join": {
+        "count": 50,
+        "mean": 45.9,
+        "p50": 46.35,
+        "p95": 49.45,
+        "p99": 49.53,
+        "max": 49.53
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.66,
+        "p50": 0.57,
+        "p95": 1.5,
+        "p99": 2.07,
+        "max": 2.82
+      },
+      "loaded": {
+        "count": 119805,
+        "mean": 1.94,
+        "p50": 1.68,
+        "p95": 4.12,
+        "p99": 5.58,
+        "max": 10.44,
+        "opsPerSecondSent": 489.03,
+        "deliveriesPerSecond": 23962.46,
+        "lossRate": 0
+      },
+      "serverRssMb": 213.82
+    },
+    {
+      "clients": 50,
+      "repetition": 8,
+      "join": {
+        "count": 50,
+        "mean": 47.9,
+        "p50": 41.51,
+        "p95": 70.39,
+        "p99": 71.98,
+        "max": 71.98
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.3,
+        "p50": 0.22,
+        "p95": 1.02,
+        "p99": 1.45,
+        "max": 2.8
+      },
+      "loaded": {
+        "count": 119854,
+        "mean": 1.78,
+        "p50": 1.48,
+        "p95": 4.03,
+        "p99": 5.65,
+        "max": 11.06,
+        "opsPerSecondSent": 489.17,
+        "deliveriesPerSecond": 23969.14,
+        "lossRate": 0
+      },
+      "serverRssMb": 213.83
+    },
+    {
+      "clients": 50,
+      "repetition": 9,
+      "join": {
+        "count": 50,
+        "mean": 53.3,
+        "p50": 48.01,
+        "p95": 73.07,
+        "p99": 74.73,
+        "max": 74.73
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.45,
+        "p50": 0.27,
+        "p95": 1.41,
+        "p99": 2.25,
+        "max": 3.15
+      },
+      "loaded": {
+        "count": 119952,
+        "mean": 1.76,
+        "p50": 1.51,
+        "p95": 3.71,
+        "p99": 5.13,
+        "max": 8.41,
+        "opsPerSecondSent": 489.67,
+        "deliveriesPerSecond": 23993.67,
+        "lossRate": 0
+      },
+      "serverRssMb": 213.85
+    },
+    {
+      "clients": 50,
+      "repetition": 10,
+      "join": {
+        "count": 50,
+        "mean": 54.73,
+        "p50": 49.18,
+        "p95": 75.37,
+        "p99": 76.76,
+        "max": 76.76
+      },
+      "unloaded": {
+        "count": 9800,
+        "mean": 0.46,
+        "p50": 0.3,
+        "p95": 1.21,
+        "p99": 1.73,
+        "max": 2.47
+      },
+      "loaded": {
+        "count": 119315,
+        "mean": 2.62,
+        "p50": 2.11,
+        "p95": 6.09,
+        "p99": 8.18,
+        "max": 16.77,
+        "opsPerSecondSent": 487,
+        "deliveriesPerSecond": 23862.85,
+        "lossRate": 0
+      },
+      "serverRssMb": 213.79
     },
     {
       "clients": 100,
+      "repetition": 1,
       "join": {
         "count": 100,
-        "mean": 103.45,
-        "p50": 81.45,
-        "p95": 193.87,
-        "p99": 199.41,
-        "max": 201.02
+        "mean": 74.37,
+        "p50": 58.79,
+        "p95": 136.36,
+        "p99": 140.28,
+        "max": 140.83
       },
       "unloaded": {
         "count": 19800,
-        "mean": 0.78,
-        "p50": 0.56,
-        "p95": 1.93,
-        "p99": 3.4,
-        "max": 8.47
+        "mean": 0.57,
+        "p50": 0.44,
+        "p95": 1.71,
+        "p99": 2.84,
+        "max": 5.81
       },
       "loaded": {
-        "count": 480744,
-        "mean": 7.15,
-        "p50": 5.06,
-        "p95": 19.22,
-        "p99": 41.31,
-        "max": 74.74,
-        "opsPerSecondSent": 970.77,
-        "deliveriesPerSecond": 96106.33,
+        "count": 482625,
+        "mean": 3.67,
+        "p50": 2.66,
+        "p95": 10.66,
+        "p99": 17.56,
+        "max": 32.37,
+        "opsPerSecondSent": 975.1,
+        "deliveriesPerSecond": 96535.09,
         "lossRate": 0
       },
-      "serverRssMb": 198.07
+      "serverRssMb": 215.91
+    },
+    {
+      "clients": 100,
+      "repetition": 2,
+      "join": {
+        "count": 100,
+        "mean": 77.28,
+        "p50": 72.97,
+        "p95": 108.9,
+        "p99": 114.33,
+        "max": 114.61
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.74,
+        "p50": 0.5,
+        "p95": 2.1,
+        "p99": 3.83,
+        "max": 8.18
+      },
+      "loaded": {
+        "count": 482625,
+        "mean": 3.43,
+        "p50": 2.61,
+        "p95": 9.5,
+        "p99": 14.78,
+        "max": 27.61,
+        "opsPerSecondSent": 975.04,
+        "deliveriesPerSecond": 96529.01,
+        "lossRate": 0
+      },
+      "serverRssMb": 218.57
+    },
+    {
+      "clients": 100,
+      "repetition": 3,
+      "join": {
+        "count": 100,
+        "mean": 88.75,
+        "p50": 91.14,
+        "p95": 101.5,
+        "p99": 105.13,
+        "max": 105.57
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.53,
+        "p50": 0.42,
+        "p95": 1.54,
+        "p99": 2.38,
+        "max": 3.48
+      },
+      "loaded": {
+        "count": 482526,
+        "mean": 4.17,
+        "p50": 3.2,
+        "p95": 11.35,
+        "p99": 16.78,
+        "max": 34.07,
+        "opsPerSecondSent": 974.83,
+        "deliveriesPerSecond": 96508.21,
+        "lossRate": 0
+      },
+      "serverRssMb": 221.08
+    },
+    {
+      "clients": 100,
+      "repetition": 4,
+      "join": {
+        "count": 100,
+        "mean": 62.79,
+        "p50": 54.42,
+        "p95": 115.15,
+        "p99": 122.12,
+        "max": 122.5
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.6,
+        "p50": 0.42,
+        "p95": 1.96,
+        "p99": 3.63,
+        "max": 5.42
+      },
+      "loaded": {
+        "count": 483219,
+        "mean": 4.12,
+        "p50": 2.92,
+        "p95": 11.56,
+        "p99": 21.19,
+        "max": 34.84,
+        "opsPerSecondSent": 976.15,
+        "deliveriesPerSecond": 96639.26,
+        "lossRate": 0
+      },
+      "serverRssMb": 221.34
+    },
+    {
+      "clients": 100,
+      "repetition": 5,
+      "join": {
+        "count": 100,
+        "mean": 88.67,
+        "p50": 93.38,
+        "p95": 134.46,
+        "p99": 135.33,
+        "max": 136.12
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.5,
+        "p50": 0.4,
+        "p95": 1.42,
+        "p99": 2.44,
+        "max": 5.57
+      },
+      "loaded": {
+        "count": 482625,
+        "mean": 3.56,
+        "p50": 2.87,
+        "p95": 9.03,
+        "p99": 13.55,
+        "max": 25.34,
+        "opsPerSecondSent": 974.83,
+        "deliveriesPerSecond": 96508.32,
+        "lossRate": 0
+      },
+      "serverRssMb": 222.23
+    },
+    {
+      "clients": 100,
+      "repetition": 6,
+      "join": {
+        "count": 100,
+        "mean": 99.75,
+        "p50": 91.14,
+        "p95": 133.93,
+        "p99": 138.24,
+        "max": 139.76
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.62,
+        "p50": 0.44,
+        "p95": 2.03,
+        "p99": 3.39,
+        "max": 5.81
+      },
+      "loaded": {
+        "count": 483912,
+        "mean": 4.53,
+        "p50": 3.51,
+        "p95": 12.81,
+        "p99": 19.54,
+        "max": 38.61,
+        "opsPerSecondSent": 977.73,
+        "deliveriesPerSecond": 96794.88,
+        "lossRate": 0
+      },
+      "serverRssMb": 222.22
+    },
+    {
+      "clients": 100,
+      "repetition": 7,
+      "join": {
+        "count": 100,
+        "mean": 80.35,
+        "p50": 78.41,
+        "p95": 94.59,
+        "p99": 95.28,
+        "max": 95.38
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.55,
+        "p50": 0.42,
+        "p95": 1.68,
+        "p99": 3.03,
+        "max": 4.91
+      },
+      "loaded": {
+        "count": 480843,
+        "mean": 4.93,
+        "p50": 3.97,
+        "p95": 12.31,
+        "p99": 18.21,
+        "max": 28.23,
+        "opsPerSecondSent": 971.28,
+        "deliveriesPerSecond": 96156.33,
+        "lossRate": 0
+      },
+      "serverRssMb": 222.83
+    },
+    {
+      "clients": 100,
+      "repetition": 8,
+      "join": {
+        "count": 100,
+        "mean": 78.55,
+        "p50": 76.87,
+        "p95": 104.11,
+        "p99": 104.17,
+        "max": 104.17
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.72,
+        "p50": 0.5,
+        "p95": 1.96,
+        "p99": 3.35,
+        "max": 6.18
+      },
+      "loaded": {
+        "count": 483615,
+        "mean": 3.52,
+        "p50": 2.82,
+        "p95": 8.82,
+        "p99": 13.97,
+        "max": 28.79,
+        "opsPerSecondSent": 976.88,
+        "deliveriesPerSecond": 96711.15,
+        "lossRate": 0
+      },
+      "serverRssMb": 222.76
+    },
+    {
+      "clients": 100,
+      "repetition": 9,
+      "join": {
+        "count": 100,
+        "mean": 90.82,
+        "p50": 83.85,
+        "p95": 109.95,
+        "p99": 111.35,
+        "max": 112.94
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.47,
+        "p50": 0.4,
+        "p95": 1.09,
+        "p99": 2.61,
+        "max": 4.07
+      },
+      "loaded": {
+        "count": 481932,
+        "mean": 3.74,
+        "p50": 2.93,
+        "p95": 10.72,
+        "p99": 16.14,
+        "max": 32.93,
+        "opsPerSecondSent": 973.7,
+        "deliveriesPerSecond": 96396.27,
+        "lossRate": 0
+      },
+      "serverRssMb": 223.36
+    },
+    {
+      "clients": 100,
+      "repetition": 10,
+      "join": {
+        "count": 100,
+        "mean": 78.06,
+        "p50": 73.31,
+        "p95": 96.38,
+        "p99": 97.53,
+        "max": 97.54
+      },
+      "unloaded": {
+        "count": 19800,
+        "mean": 0.49,
+        "p50": 0.4,
+        "p95": 1.37,
+        "p99": 2.29,
+        "max": 4.17
+      },
+      "loaded": {
+        "count": 483813,
+        "mean": 2.79,
+        "p50": 2.22,
+        "p95": 7.3,
+        "p99": 11.13,
+        "max": 19.31,
+        "opsPerSecondSent": 977.12,
+        "deliveriesPerSecond": 96735.14,
+        "lossRate": 0
+      },
+      "serverRssMb": 225.05
     }
   ]
 }

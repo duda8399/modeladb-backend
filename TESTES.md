@@ -16,6 +16,8 @@
 | `npm run test:e2e` | Integração: API HTTP + gateway Socket.IO com a aplicação real | ~15 s |
 | `npm run test:e2e:cov` | O mesmo, com relatório de cobertura em `coverage-e2e/` | ~20 s |
 | `npm run perf:realtime` | Latência e vazão do gateway com 2 a 100 clientes, 10 repetições por cenário (`PERF_REPEATS`) com média, desvio padrão, CV e IC 95% | ~8 min |
+| `npm run eval:ai` | Avaliação da IA com a OpenAI real (exige `OPENAI_API_KEY`): 10 domínios com modelo de referência, mede entidades, PK, FK e cardinalidade da geração, defeitos plantados detectados pela análise e estabilidade entre execuções (`EVAL_RUNS`, padrão 5). `EVAL_FAKE=1` valida o pipeline sem chamar a OpenAI. Resultados em `reports/ai-eval/` | ~3 min |
+| `npm run eval:ai:pertinencia` | Lê `reports/ai-eval/sugestoes-para-avaliar.csv` preenchido (`sim`/`parcial`/`nao`) e calcula a taxa de sugestões pertinentes e o kappa de Cohen | — |
 | `npm run test:server` | Sobe o backend isolado em `:3101` (usado pelo Playwright do frontend) | — |
 | `npm run test:memory-db` | Sobe só o MongoDB em memória e imprime a URI; com `TEST_SERVER_DB_URI=<uri>` o `test:server` usa esse banco, que sobrevive a reinícios do servidor (usado pelo experimento de reconexão do frontend) | — |
 

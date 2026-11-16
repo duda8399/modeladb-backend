@@ -1,0 +1,51 @@
+﻿dominio,execucao,ok,erro,nota_modelo,defeitos_plantados,defeitos_detectados,revocacao_defeitos,detectados,sugestoes,sugestoes_sobre_defeitos_plantados,sugestoes_com_acao,acoes_descartadas_na_validacao,latencia_ms,tokens_entrada,tokens_saida
+biblioteca,1,1,,70,4,4,1,biblioteca.autores | biblioteca.isbn | biblioteca.data_retirada | biblioteca.email,12,5,8,2,25078,1603,1446
+biblioteca,2,1,,70,4,4,1,biblioteca.autores | biblioteca.isbn | biblioteca.data_retirada | biblioteca.email,13,7,8,3,26891,1603,1541
+biblioteca,3,1,,65,4,4,1,biblioteca.autores | biblioteca.isbn | biblioteca.data_retirada | biblioteca.email,11,4,7,3,24725,1603,1421
+biblioteca,4,1,,65,4,4,1,biblioteca.autores | biblioteca.isbn | biblioteca.data_retirada | biblioteca.email,12,7,7,2,23809,1603,1371
+biblioteca,5,1,,65,4,3,0.75,biblioteca.autores | biblioteca.data_retirada | biblioteca.email,12,7,7,2,23526,1603,1348
+loja,1,1,,75,4,3,0.75,loja.preco | loja.cpf | loja.nome_cliente,9,4,6,3,20167,1568,1161
+loja,2,1,,75,4,3,0.75,loja.preco | loja.nome_cliente | loja.quantidade,11,3,6,3,23011,1568,1431
+loja,3,1,,70,4,3,0.75,loja.preco | loja.nome_cliente | loja.quantidade,10,3,6,3,21059,1568,1269
+loja,4,1,,75,4,4,1,loja.preco | loja.cpf | loja.nome_cliente | loja.quantidade,10,4,6,2,20000,1568,1234
+loja,5,1,,75,4,4,1,loja.preco | loja.cpf | loja.nome_cliente | loja.quantidade,10,4,5,3,20537,1568,1221
+clinica,1,1,,70,4,4,1,clinica.data_nascimento | clinica.telefones | clinica.valor | clinica.crm,14,7,10,1,27317,1485,1648
+clinica,2,1,,75,4,3,0.75,clinica.data_nascimento | clinica.telefones | clinica.valor,11,7,8,0,20283,1485,1233
+clinica,3,1,,70,4,3,0.75,clinica.data_nascimento | clinica.telefones | clinica.valor,9,5,6,2,18690,1485,1103
+clinica,4,1,,70,4,3,0.75,clinica.data_nascimento | clinica.telefones | clinica.valor,12,5,8,1,24084,1485,1402
+clinica,5,1,,70,4,3,0.75,clinica.data_nascimento | clinica.telefones | clinica.valor,11,6,6,2,21370,1485,1257
+escola,1,1,,75,3,2,0.6667,escola.professor_nome | escola.curso_nome,11,2,7,3,24269,1574,1402
+escola,2,1,,75,3,3,1,escola.professor_nome | escola.codigo | escola.curso_nome,13,3,9,3,27431,1574,1640
+escola,3,1,,70,3,2,0.6667,escola.professor_nome | escola.curso_nome,12,2,6,3,23719,1574,1423
+escola,4,1,,75,3,2,0.6667,escola.professor_nome | escola.curso_nome,11,2,6,3,22281,1574,1299
+escola,5,1,,75,3,2,0.6667,escola.professor_nome | escola.curso_nome,10,2,6,4,26125,1574,1365
+hotel,1,0,A OpenAI retornou uma análise inválida,,,,,,,,,,285351,1481,16384
+hotel,2,1,,75,4,4,1,hotel.valor_diaria | hotel.documento | hotel.situacao | hotel.fk_quarto,13,6,9,1,28010,1481,1500
+hotel,3,1,,75,4,4,1,hotel.valor_diaria | hotel.documento | hotel.situacao | hotel.fk_quarto,13,5,7,2,25673,1481,1479
+hotel,4,1,,75,4,3,0.75,hotel.valor_diaria | hotel.documento | hotel.fk_quarto,10,4,4,3,18854,1481,1056
+hotel,5,1,,75,4,4,1,hotel.valor_diaria | hotel.documento | hotel.situacao | hotel.fk_quarto,10,8,6,2,21955,1481,1226
+academia,1,1,,65,4,4,1,academia.valor | academia.cpf | academia.data_pagamento | academia.instrutor_nome,12,6,9,2,25371,1562,1422
+academia,2,1,,65,4,2,0.5,academia.cpf | academia.data_pagamento,12,3,7,2,23600,1562,1268
+academia,3,1,,65,4,4,1,academia.valor | academia.cpf | academia.data_pagamento | academia.instrutor_nome,14,6,9,2,28744,1562,1599
+academia,4,1,,65,4,4,1,academia.valor | academia.cpf | academia.data_pagamento | academia.instrutor_nome,13,5,8,2,25101,1562,1488
+academia,5,1,,65,4,4,1,academia.valor | academia.cpf | academia.data_pagamento | academia.instrutor_nome,13,5,7,2,22800,1562,1380
+rh,1,1,,75,4,4,1,rh.salario | rh.cpf | rh.departamento_nome | rh.sigla,11,4,8,1,22776,1496,1332
+rh,2,1,,70,4,4,1,rh.salario | rh.cpf | rh.departamento_nome | rh.sigla,13,5,8,2,25644,1496,1440
+rh,3,1,,70,4,3,0.75,rh.salario | rh.cpf | rh.departamento_nome,10,4,7,2,22609,1496,1290
+rh,4,1,,75,4,4,1,rh.salario | rh.cpf | rh.departamento_nome | rh.sigla,11,6,7,2,21867,1496,1293
+rh,5,1,,75,4,4,1,rh.salario | rh.cpf | rh.departamento_nome | rh.sigla,12,4,6,2,22467,1496,1322
+streaming,1,1,,70,4,4,1,streaming.email | streaming.artista_nome | streaming.generos | streaming.fk_album,13,5,7,2,24670,1550,1355
+streaming,2,1,,70,4,3,0.75,streaming.email | streaming.artista_nome | streaming.fk_album,11,5,6,2,23173,1550,1240
+streaming,3,1,,70,4,4,1,streaming.email | streaming.artista_nome | streaming.generos | streaming.fk_album,13,4,7,3,25869,1550,1468
+streaming,4,1,,70,4,4,1,streaming.email | streaming.artista_nome | streaming.generos | streaming.fk_album,13,4,6,3,24150,1550,1369
+streaming,5,1,,70,4,2,0.5,streaming.artista_nome | streaming.fk_album,10,4,5,4,24344,1550,1248
+oficina,1,1,,60,4,3,0.75,oficina.abertura | oficina.valor_total | oficina.cliente_telefone,13,3,8,2,28387,1511,1530
+oficina,2,1,,65,4,3,0.75,oficina.abertura | oficina.valor_total | oficina.cliente_telefone,13,3,8,2,27405,1511,1461
+oficina,3,1,,65,4,3,0.75,oficina.abertura | oficina.valor_total | oficina.cliente_telefone,13,4,7,2,328666,1511,1477
+oficina,4,1,,65,4,3,0.75,oficina.abertura | oficina.valor_total | oficina.cliente_telefone,13,3,6,4,25650,1511,1466
+oficina,5,1,,65,4,3,0.75,oficina.abertura | oficina.valor_total | oficina.cliente_telefone,13,3,7,2,24630,1511,1442
+eventos,1,1,,70,4,3,0.75,eventos.preco | eventos.data | eventos.local_capacidade,12,3,6,3,23446,1576,1325
+eventos,2,1,,70,4,2,0.5,eventos.preco | eventos.data,14,2,9,3,29679,1576,1732
+eventos,3,1,,70,4,3,0.75,eventos.preco | eventos.data | eventos.local_capacidade,12,3,7,3,25177,1576,1487
+eventos,4,1,,70,4,2,0.5,eventos.preco | eventos.data,13,3,8,3,29016,1576,1569
+eventos,5,1,,70,4,2,0.5,eventos.preco | eventos.data,12,2,8,3,41981,1576,1530

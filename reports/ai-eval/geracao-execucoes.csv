@@ -1,0 +1,51 @@
+﻿dominio,execucao,ok,erro,tabelas_geradas,entidades_precisao,entidades_revocacao,entidades_f1,entidades_ausentes,entidades_extras,pk_corretas,pk_avaliadas,tabelas_sem_pk,rel_precisao,rel_revocacao,rel_f1,rel_ausentes,card_corretas,card_avaliadas,erros_cardinalidade,fk_validas,fk_total,rel_descartados_na_materializacao,latencia_ms,tokens_entrada,tokens_saida
+biblioteca,1,1,,1,1,0.2,0.3333,Autor | Exemplar | Leitor | Emprestimo,,1,1,0,,0,,Livro N:N Autor | Livro 1:N Exemplar | Leitor 1:N Emprestimo | Exemplar 1:N Emprestimo,0,0,,0,0,1,3586,1037,302
+biblioteca,2,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,13433,1037,1578
+biblioteca,3,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,13218,1037,1574
+biblioteca,4,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,13145,1037,1574
+biblioteca,5,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,13722,1037,1585
+loja,1,1,,7,1,1,1,,,7,7,0,1,1,1,,7,7,,7,7,0,17544,1022,2111
+loja,2,1,,7,1,1,1,,,7,7,0,1,1,1,,7,7,,7,7,0,17770,1022,2110
+loja,3,1,,7,1,1,1,,,7,7,0,1,1,1,,7,7,,7,7,0,17262,1022,2084
+loja,4,1,,7,1,1,1,,,7,7,0,1,1,1,,7,7,,7,7,0,17385,1022,2099
+loja,5,1,,7,1,1,1,,,7,7,0,1,1,1,,7,7,,7,7,0,17564,1022,2089
+clinica,1,1,,5,1,0.8333,0.9091,Especialidade,,5,5,0,1,0.8,0.8889,Especialidade 1:N Medico,4,4,,4,4,0,11447,1008,1372
+clinica,2,1,,5,1,0.8333,0.9091,Especialidade,,5,5,0,1,0.8,0.8889,Especialidade 1:N Medico,4,4,,4,4,0,11198,1008,1356
+clinica,3,1,,5,1,0.8333,0.9091,Especialidade,,5,5,0,1,0.8,0.8889,Especialidade 1:N Medico,4,4,,4,4,0,12167,1008,1394
+clinica,4,1,,5,1,0.8333,0.9091,Especialidade,,5,5,0,1,0.8,0.8889,Especialidade 1:N Medico,4,4,,4,4,0,11739,1008,1345
+clinica,5,1,,5,1,0.8333,0.9091,Especialidade,,5,5,0,1,0.8,0.8889,Especialidade 1:N Medico,4,4,,4,4,0,11743,1008,1346
+escola,1,1,,5,1,1,1,,,5,5,0,1,1,1,,4,4,,4,4,0,10896,1022,1332
+escola,2,1,,5,1,1,1,,,5,5,0,1,1,1,,4,4,,4,4,0,11179,1022,1332
+escola,3,1,,5,1,1,1,,,5,5,0,1,1,1,,4,4,,4,4,0,10651,1022,1333
+escola,4,1,,5,1,1,1,,,5,5,0,1,1,1,,4,4,,4,4,0,10816,1022,1338
+escola,5,1,,5,1,1,1,,,5,5,0,1,1,1,,4,4,,4,4,0,10470,1022,1313
+hotel,1,1,,5,1,0.8333,0.9091,TipoQuarto,,5,5,0,1,0.8,0.8889,TipoQuarto 1:N Quarto,4,4,,4,4,0,11229,1033,1400
+hotel,2,1,,5,1,0.8333,0.9091,TipoQuarto,,5,5,0,1,0.8,0.8889,TipoQuarto 1:N Quarto,4,4,,4,4,0,11613,1033,1459
+hotel,3,1,,5,1,0.8333,0.9091,TipoQuarto,,5,5,0,1,0.8,0.8889,TipoQuarto 1:N Quarto,4,4,,4,4,0,11177,1033,1405
+hotel,4,1,,5,1,0.8333,0.9091,TipoQuarto,,5,5,0,1,0.8,0.8889,TipoQuarto 1:N Quarto,4,4,,4,4,0,11012,1033,1408
+hotel,5,1,,5,1,0.8333,0.9091,TipoQuarto,,5,5,0,1,0.8,0.8889,TipoQuarto 1:N Quarto,4,4,,4,4,0,11061,1033,1418
+academia,1,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,12523,1041,1648
+academia,2,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,13216,1041,1675
+academia,3,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,12441,1041,1648
+academia,4,1,,1,1,0.1667,0.2857,Plano | Modalidade | Turma | Instrutor | Pagamento,,1,1,0,,0,,Plano 1:N Aluno | Modalidade 1:N Turma | Instrutor 1:N Turma | Aluno N:N Turma | Aluno 1:N Pagamento,0,0,,0,0,1,2936,1041,304
+academia,5,1,,7,1,1,1,,,6,6,0,1,1,1,,5,5,,6,6,0,12381,1041,1642
+rh,1,1,,1,1,0.2,0.3333,Departamento | Dependente | Projeto | Alocacao,,1,1,0,,0,,Departamento 1:N Funcionario | Funcionario 1:1 Departamento | Funcionario 1:N Dependente | Departamento 1:N Projeto | Funcionario 1:N Alocacao | Projeto 1:N Alocacao,0,0,,0,0,1,3420,1057,407
+rh,2,1,,6,1,1,1,,,6,6,0,1,1,1,,5,7,"Departamento→Funcionario: esperado 1:N, gerado 1:1 | Funcionario→Departamento: esperado 1:1, gerado 1:N",7,7,0,12975,1057,1704
+rh,3,1,,6,1,1,1,,,6,6,0,1,1,1,,7,7,,7,7,0,13100,1057,1734
+rh,4,1,,1,1,0.2,0.3333,Departamento | Dependente | Projeto | Alocacao,,1,1,0,,0,,Departamento 1:N Funcionario | Funcionario 1:1 Departamento | Funcionario 1:N Dependente | Departamento 1:N Projeto | Funcionario 1:N Alocacao | Projeto 1:N Alocacao,0,0,,0,0,1,3566,1057,407
+rh,5,1,,1,1,0.2,0.3333,Departamento | Dependente | Projeto | Alocacao,,1,1,0,,0,,Departamento 1:N Funcionario | Funcionario 1:1 Departamento | Funcionario 1:N Dependente | Departamento 1:N Projeto | Funcionario 1:N Alocacao | Projeto 1:N Alocacao,0,0,,0,0,1,3786,1057,407
+streaming,1,1,,1,1,0.1667,0.2857,Artista | Album | Musica | Playlist | PlaylistMusica,,1,1,0,,0,,Artista 1:N Album | Album 1:N Musica | Usuario 1:N Playlist | Playlist 1:N PlaylistMusica | Musica 1:N PlaylistMusica,0,0,,0,0,0,2324,1032,262
+streaming,2,1,,1,1,0.1667,0.2857,Artista | Album | Musica | Playlist | PlaylistMusica,,1,1,0,,0,,Artista 1:N Album | Album 1:N Musica | Usuario 1:N Playlist | Playlist 1:N PlaylistMusica | Musica 1:N PlaylistMusica,0,0,,0,0,0,2546,1032,262
+streaming,3,1,,1,1,0.1667,0.2857,Artista | Album | Musica | Playlist | PlaylistMusica,,1,1,0,,0,,Artista 1:N Album | Album 1:N Musica | Usuario 1:N Playlist | Playlist 1:N PlaylistMusica | Musica 1:N PlaylistMusica,0,0,,0,0,0,2627,1032,262
+streaming,4,1,,1,1,0.1667,0.2857,Artista | Album | Musica | Playlist | PlaylistMusica,,1,1,0,,0,,Artista 1:N Album | Album 1:N Musica | Usuario 1:N Playlist | Playlist 1:N PlaylistMusica | Musica 1:N PlaylistMusica,0,0,,0,0,0,2481,1032,262
+streaming,5,1,,1,1,0.1667,0.2857,Artista | Album | Musica | Playlist | PlaylistMusica,,1,1,0,,0,,Artista 1:N Album | Album 1:N Musica | Usuario 1:N Playlist | Playlist 1:N PlaylistMusica | Musica 1:N PlaylistMusica,0,0,,0,0,0,2740,1032,262
+oficina,1,1,,8,1,1,1,,,7,7,0,1,1,1,,6,6,,7,7,0,16205,1051,2028
+oficina,2,1,,8,1,1,1,,,7,7,0,1,1,1,,6,6,,7,7,0,17245,1051,2131
+oficina,3,1,,8,1,1,1,,,7,7,0,1,1,1,,6,6,,7,7,0,17076,1051,2131
+oficina,4,1,,8,1,1,1,,,7,7,0,1,1,1,,6,6,,7,7,0,16473,1051,2131
+oficina,5,1,,8,1,1,1,,,7,7,0,1,1,1,,6,6,,7,7,0,15658,1051,2028
+eventos,1,1,,1,1,0.1429,0.25,Organizador | Local | TipoIngresso | Participante | Compra | Ingresso,,1,1,0,,0,,Organizador 1:N Evento | Local 1:N Evento | Evento 1:N TipoIngresso | Participante 1:N Compra | Compra 1:N Ingresso | TipoIngresso 1:N Ingresso,0,0,,0,0,2,3741,1049,434
+eventos,2,1,,1,1,0.1429,0.25,Organizador | Local | TipoIngresso | Participante | Compra | Ingresso,,1,1,0,,0,,Organizador 1:N Evento | Local 1:N Evento | Evento 1:N TipoIngresso | Participante 1:N Compra | Compra 1:N Ingresso | TipoIngresso 1:N Ingresso,0,0,,0,0,2,3911,1049,434
+eventos,3,1,,1,1,0.1429,0.25,Organizador | Local | TipoIngresso | Participante | Compra | Ingresso,,1,1,0,,0,,Organizador 1:N Evento | Local 1:N Evento | Evento 1:N TipoIngresso | Participante 1:N Compra | Compra 1:N Ingresso | TipoIngresso 1:N Ingresso,0,0,,0,0,2,3757,1049,438
+eventos,4,1,,1,1,0.1429,0.25,Organizador | Local | TipoIngresso | Participante | Compra | Ingresso,,1,1,0,,0,,Organizador 1:N Evento | Local 1:N Evento | Evento 1:N TipoIngresso | Participante 1:N Compra | Compra 1:N Ingresso | TipoIngresso 1:N Ingresso,0,0,,0,0,2,3750,1049,438
+eventos,5,1,,8,1,1,1,,,8,8,0,1,1,1,,7,7,,7,7,0,16031,1049,2068

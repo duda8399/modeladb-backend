@@ -25,6 +25,8 @@
     "test:server": "ts-node --transpile-only -r tsconfig-paths/register test/support/test-server.ts",
     "test:memory-db": "ts-node --transpile-only -r tsconfig-paths/register test/support/memory-db-server.ts",
     "perf:realtime": "ts-node --transpile-only test/perf/realtime-latency.ts",
+    "eval:ai": "ts-node --transpile-only -r tsconfig-paths/register test/ai-eval/run.ts",
+    "eval:ai:pertinencia": "ts-node --transpile-only -r tsconfig-paths/register test/ai-eval/score-ratings.ts",
     "secrets:encrypt-openai": "ts-node --transpile-only -r tsconfig-paths/register scripts/encrypt-openai-tokens.ts"
   },
   "dependencies": {

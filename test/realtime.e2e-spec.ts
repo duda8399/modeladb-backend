@@ -500,11 +500,17 @@ describe('Gateway de tempo real (integração)', () => {
       expect(back.sync.ops).toEqual([]);
     });
 
-    it('uma época desconhecida pede recarga completa', async () => {
+    it('uma época desconhecida pede recarga completa e traz as operações da época atual', async () => {
       const { sync } = await joinWithSync(owner, { epoch: 'antiga', seq: 3 });
+      const { sync: fromStart } = await joinWithSync(owner, {
+        epoch: sync.epoch,
+        seq: 0,
+      });
 
       expect(sync.complete).toBe(false);
-      expect(sync.ops).toEqual([]);
+      expect(fromStart.complete).toBe(true);
+      expect(sync.ops).toEqual(fromStart.ops);
+      expect(sync.ops.length).toBe(sync.seq);
     });
   });
 });

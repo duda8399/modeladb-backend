@@ -17,6 +17,7 @@
 | `npm run test:e2e:cov` | O mesmo, com relatório de cobertura em `coverage-e2e/` | ~20 s |
 | `npm run perf:realtime` | Latência e vazão do gateway com 2 a 100 clientes, 10 repetições por cenário (`PERF_REPEATS`) com média, desvio padrão, CV e IC 95% | ~8 min |
 | `npm run test:server` | Sobe o backend isolado em `:3101` (usado pelo Playwright do frontend) | — |
+| `npm run test:memory-db` | Sobe só o MongoDB em memória e imprime a URI; com `TEST_SERVER_DB_URI=<uri>` o `test:server` usa esse banco, que sobrevive a reinícios do servidor (usado pelo experimento de reconexão do frontend) | — |
 
 ## O que cada suíte cobre
 

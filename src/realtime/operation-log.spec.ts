@@ -46,6 +46,31 @@ describe('OperationLog', () => {
     expect(sync.epoch).not.toBe(epoch);
   });
 
+  it('com época nova, devolve todas as operações dela se o log ainda está inteiro', () => {
+    const log = new OperationLog();
+    const { epoch } = log.append('d1', 'a');
+    log.reset('d1');
+    log.append('d1', 'b');
+    log.append('d1', 'c');
+
+    expect(log.since('d1', { epoch, seq: 1 })).toEqual(
+      expect.objectContaining({ ops: ['b', 'c'], complete: false, seq: 2 }),
+    );
+  });
+
+  it('com época nova e log já truncado, não devolve operações', () => {
+    const log = new OperationLog(2);
+    const { epoch } = log.append('d1', 'a');
+    log.reset('d1');
+    log.append('d1', 'b');
+    log.append('d1', 'c');
+    log.append('d1', 'd');
+
+    expect(log.since('d1', { epoch, seq: 1 })).toEqual(
+      expect.objectContaining({ ops: [], complete: false }),
+    );
+  });
+
   it('marca como incompleto quando as operações perdidas já saíram do log', () => {
     const log = new OperationLog(2);
     const { epoch } = log.append('d1', 'a');

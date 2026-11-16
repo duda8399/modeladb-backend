@@ -14,7 +14,10 @@ async function main() {
   const port = Number(process.env.PORT ?? 3101);
   const frontUrl = process.env.FRONT_URL || 'http://localhost:5174';
 
-  const db = await startMemoryDb('modeladb_test_server');
+  const externalUri = process.env.TEST_SERVER_DB_URI;
+  const db = externalUri
+    ? { uri: externalUri, stop: () => Promise.resolve() }
+    : await startMemoryDb('modeladb_test_server');
   applyTestEnv(db.uri, frontUrl);
 
   // Imports só depois de configurar o ambiente: os módulos leem process.env

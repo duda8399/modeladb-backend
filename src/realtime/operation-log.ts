@@ -51,7 +51,13 @@ export class OperationLog {
     const covered = seq >= oldest - 1 && seq <= log.seq;
 
     if (!sameEpoch || !covered) {
-      return { ...base, ops: [], complete: false, initial: false };
+      const wholeEpoch = !sameEpoch && log.entries[0]?.seq === 1;
+      return {
+        ...base,
+        ops: wholeEpoch ? log.entries.map((e) => e.op) : [],
+        complete: false,
+        initial: false,
+      };
     }
 
     return {

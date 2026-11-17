@@ -99,8 +99,10 @@ function main() {
   const iDomain = col('dominio');
   const iCategory = col('categoria');
   const iPlanted = col('defeito_plantado');
-  const iA = col('avaliador_1');
-  const iB = col('avaliador_2');
+  const iA = header.includes('avaliador_1')
+    ? col('avaliador_1')
+    : col('avaliador');
+  const iB = header.indexOf('avaliador_2');
   const iL = header.indexOf('avaliador_llm');
 
   const items = rows.map((r) => ({
@@ -108,9 +110,11 @@ function main() {
     category: r[iCategory],
     planted: !!r[iPlanted]?.trim(),
     a: normalizeRating(r[iA] ?? ''),
-    b: normalizeRating(r[iB] ?? ''),
+    b: iB >= 0 ? normalizeRating(r[iB] ?? '') : null,
     llm: iL >= 0 ? normalizeRating(r[iL] ?? '') : null,
-    raw: [r[iA], r[iB], iL >= 0 ? r[iL] : ''].map((v) => (v ?? '').trim()),
+    raw: [r[iA], iB >= 0 ? r[iB] : '', iL >= 0 ? r[iL] : ''].map((v) =>
+      (v ?? '').trim(),
+    ),
   }));
   type Item = (typeof items)[number];
 
